@@ -3,7 +3,7 @@
     "name": "cryptools",
     "version": "0.1.0",
     "author": "Nicolás Japas",
-    "homepage": "https://cryptools.org",
+    "homepage": "https://nicojapas.github.io/cryptools-public",
     "description": "Your Crypto Tools",
     "scripts": {
         "dev": "vite",
