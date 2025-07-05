@@ -37,23 +37,12 @@ const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
 const App = () => {
 	const [themeMode, setThemeMode] = useState("light");
-	const [settingsButton, setSettingsButton] = useState();
-	const pagesTable = {
-		"/": <Home />,
-		"/home": <Home />,
-		"/news": <News />,
-		"/biggest-coins": (
-			<BiggestCoins setSettingsButton={setSettingsButton} />
-		),
-		"/nfts": <Soon />,
-		"/charts": <Charts />,
-		"/hot-projects": <HotProjects />,
-		"/top-gainers": <TopGainers />,
-		"/worst-losers": <WorstLosers />,
-		"/rug-checker": <RugChecker />,
-		"/sniper": <Sniper />,
-		"/bsc-sniffer": <BscSniffer />,
+	const [settingsButton, setSettingsButton] = useState<React.ReactElement | undefined>(undefined);
+	
+	const handleSetSettingsButton = (button?: React.FC) => {
+		setSettingsButton(button ? <button /> : undefined);
 	};
+
 	const colorMode = useMemo(
 		() => ({
 			toggleColorMode: () => {
@@ -84,23 +73,27 @@ const App = () => {
 			<ColorModeContext.Provider value={colorMode}>
 				<ThemeProvider theme={createTheme(ThemeByMode(themeMode))}>
 					<CssBaseline />
-					<BrowserRouter>
+					<BrowserRouter basename="/cryptools-public">
 						<CryptoolsAppBar
 							themeModeButton={<ThemeModeButton />}
-							settingsButton={settingsButton}
+							settingsButton={settingsButton || <div />}
 						/>
-						<ContactAndCryptoAddresses />
+						<div style={{ position: 'relative', height: '100vh', paddingTop: '64px' }}>
 							<Routes>
-								{Object.entries(pagesTable).map(
-									([path, element], index) => (
-										<Route
-											key={index}
-											path={path}
-											element={element}
-										/>
-									)
-								)}
+								<Route path="/" element={<Home />} />
+								<Route path="/home" element={<Home />} />
+								<Route path="/news" element={<News />} />
+								<Route path="/biggest-coins" element={<BiggestCoins setSettingsButton={handleSetSettingsButton} />} />
+								<Route path="/nfts" element={<Soon />} />
+								<Route path="/charts" element={<Charts />} />
+								<Route path="/hot-projects" element={<HotProjects />} />
+								<Route path="/top-gainers" element={<TopGainers />} />
+								<Route path="/worst-losers" element={<WorstLosers />} />
+								<Route path="/rug-checker" element={<RugChecker />} />
+								<Route path="/sniper" element={<Sniper />} />
+								<Route path="/bsc-sniffer" element={<BscSniffer />} />
 							</Routes>
+						</div>
 					</BrowserRouter>
 				</ThemeProvider>
 			</ColorModeContext.Provider>
