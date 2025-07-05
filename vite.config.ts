@@ -8,15 +8,14 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
+    target: 'es2015', // Target older browsers for better compatibility
     rollupOptions: {
       output: {
-        manualChunks: undefined,
+        format: 'es', // Keep ES modules but target older browsers
+        entryFileNames: 'assets/[name].[hash].js',
+        chunkFileNames: 'assets/[name].[hash].js',
+        assetFileNames: 'assets/[name].[hash].[ext]'
       },
-    },
-  },
-  server: {
-    headers: {
-      'Content-Type': 'application/javascript',
     },
   },
 });
