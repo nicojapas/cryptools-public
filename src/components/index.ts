@@ -13,3 +13,5 @@ export { default as TargetPanel } from './targetpanel/TargetPanel';
 export { default as ThemeByMode } from './theme/ThemeByMode';
 export { default as TxsPanel } from './txspanel/TxsPanel';
 export { default as WalletPanel } from './walletpanel/WalletPanel';
+export { CoinCard } from './coincard/CoinCard';
+export { SettingsDialog } from './settings/SettingsDialog';
