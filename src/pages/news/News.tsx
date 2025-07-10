@@ -1,4 +1,3 @@
-import { useQuery } from "@tanstack/react-query";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import CardActionArea from "@mui/material/CardActionArea";
@@ -16,9 +15,10 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import Typography from "@mui/material/Typography";
 import WarningIcon from "@mui/icons-material/Warning";
 
-import { APP_BAR_HEIGHT, getApiUrl } from "../../constants.js";
+import { APP_BAR_HEIGHT } from "../../constants.js";
 import { StyledBoxForPages, StyledPaper } from "../../components";
 import { VoteMap, VotesComponentProps, NewsData } from "../../utils/types";
+import { useNewsData } from "../../hooks";
 
 const VOTES_MAP: VoteMap = {
 	toxic: { color: "primary.dark", icon: CoronavirusIcon },
@@ -37,24 +37,18 @@ const VotesComponent = (props: VotesComponentProps) => {
 
 	return (
 		<Typography variant="caption" sx={{ color: color, ml: 0.5, mr: 0.5 }}>
-			<Icon fontSize="inherit" sx={{ mr: 0.5 }} />
+			<Icon sx={{ mr: 0.5, fontSize: 'inherit' }} />
 			{n}
 		</Typography>
 	);
 };
 
 const News = () => {
-	// const { isLoading, error, data } = useQuery<NewsData[]>({
-	// 	queryKey: ["cryptoolsNewsData"],
-	// 	queryFn: () =>
-	// 		fetch(new URL("news", API_URL).toString())
-	// 			.then((res) => res.json())
-	// 			.then((data) => data.results),
-	// });
-    const data: NewsData[] = [];
-	// if (error) return <>&apos;An error has occurred: &apos; + error.message</>;
+	const { isLoading, error, data } = useNewsData();
 
-	// if (isLoading) return <Skeleton variant="rounded" height={60} />;
+	if (error) return <>&apos;An error has occurred: &apos; + error.message</>;
+
+	if (isLoading) return <Skeleton variant="rounded" height={60} />;
 
 	return (
 		<StyledBoxForPages
@@ -64,7 +58,7 @@ const News = () => {
 			<Container maxWidth="md" sx={{ p: 2 }}>
 				<Grid container alignItems="stretch">
 					<StyledPaper>
-						{Array.from(data).map((el: NewsData, index: number) => (
+						{Array.from(data || []).map((el: NewsData, index: number) => (
 							<Grid
 								item
 								xs={12}
@@ -73,7 +67,8 @@ const News = () => {
 							>
 								<CardActionArea
 									key={index}
-									onClick={() => window.open(el.url)}
+									onClick={() => el.url && window.open(el.url)}
+									disabled={!el.url}
 								>
 									{index > 0 ? <Divider /> : null}
 									<Stack>

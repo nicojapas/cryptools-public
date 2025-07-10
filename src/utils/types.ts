@@ -205,6 +205,18 @@ export interface NewsVotes {
   lol?: number;
 }
 
+export interface RawNewsData {
+  id: number;
+  title: string;
+  summary: string;
+  source: string;
+  published_at: string;
+  url: string | null;
+  currencies: any[];
+  votes: NewsVotes;
+  domain: string | null;
+}
+
 export interface NewsData {
   url: string;
   timeSincePublished: string;
@@ -215,12 +227,12 @@ export interface NewsData {
 export interface VotesComponentProps {
   color: string;
   n: number;
-  icon: React.FC;
+  icon: React.ComponentType<any>;
 }
 
 export interface VoteMapItem {
   color: string;
-  icon: React.FC;
+  icon: React.ComponentType<any>;
 }
 
 export interface VoteMap {
