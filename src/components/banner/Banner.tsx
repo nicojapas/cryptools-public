@@ -38,6 +38,7 @@ const Banner = () => {
 					// Set the animation distance dynamically
 					 
 					...( { ["--banner-translate"]: `-${setWidth}px` } as any ),
+					animationDuration: `${coinsCount*3}s`
 				}}
 			>
 				{[0, 1].map((dup) =>

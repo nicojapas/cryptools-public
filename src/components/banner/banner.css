@@ -8,7 +8,6 @@
 }
 
 .banner1 {
-  animation-duration: 16s;
   animation-name: movebanner;
   animation-iteration-count: infinite;
   animation-direction: normal;
