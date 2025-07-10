@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { HashRouter, Route, Routes } from "react-router-dom";
 import { createContext, useState, useMemo } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -70,7 +70,7 @@ const App = () => {
 			<ColorModeContext.Provider value={colorMode}>
 				<ThemeProvider theme={createTheme(ThemeByMode(themeMode))}>
 					<CssBaseline />
-					<BrowserRouter basename="/cryptools-public">
+					<HashRouter>
 						<CryptoolsAppBar
 							themeModeButton={ThemeModeButton}
 							settingsButton={settingsButton || <div />}
@@ -91,7 +91,7 @@ const App = () => {
 								<Route path="/bsc-sniffer" element={<BscSniffer />} />
 							</Routes>
 						</div>
-					</BrowserRouter>
+					</HashRouter>
 				</ThemeProvider>
 			</ColorModeContext.Provider>
 		</QueryClientProvider>
