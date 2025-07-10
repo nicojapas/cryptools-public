@@ -1,19 +1,21 @@
 @keyframes movebanner {
   from {
-    transform: translate(0, 0px);
+    transform: translateX(0);
   }
-
   to {
-    transform: translate(-3075px, 0px);
+    transform: translateX(var(--banner-translate, -900px));
   }
 }
 
 .banner1 {
-  animation-duration: 40s;
+  animation-duration: 16s;
   animation-name: movebanner;
   animation-iteration-count: infinite;
   animation-direction: normal;
   animation-timing-function: linear;
+  will-change: transform;
+  /* Default for 3 coins, can be overridden inline */
+  --banner-translate: -900px;
 }
 #banners::-webkit-scrollbar {
   visibility:hidden;

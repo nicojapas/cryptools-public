@@ -397,6 +397,23 @@ export interface BuyFunctionParams {
   waitingTime?: number;
 }
 
+export interface CoinImgProps {
+  image: string;
+  name: string;
+}
+
+export interface CoinNameProps {
+  name: string;
+}
+
+export interface CoinPriceProps {
+  price: string | number;
+}
+
+export interface CoinPriceChangeProps {
+  priceChangePercentage: number | null;
+}
+
 declare global {
   interface Window {
     ethereum?: EthereumProvider;

@@ -95,7 +95,7 @@ export const mockTokensData: BiggestCoinData[] = [
   {
     symbol: "ada",
     name: "Cardano",
-    image: "https://assets.coingecko.com/coins/images/975/large/Cardano.png?1547034860",
+    image: "https://assets.coingecko.com/coins/images/975/large/cardano.png",
     currentPrice: "0.485",
     marketCap: "17123456789",
     marketCapRank: 7,
@@ -140,7 +140,7 @@ export const mockTokensData: BiggestCoinData[] = [
   {
     symbol: "dot",
     name: "Polkadot",
-    image: "https://assets.coingecko.com/coins/images/12171/large/polkadot_new_logo.png?1639712644",
+    image: "https://assets.coingecko.com/coins/images/12171/large/polkadot.png",
     currentPrice: "7.25",
     marketCap: "9123456789",
     marketCapRank: 10,

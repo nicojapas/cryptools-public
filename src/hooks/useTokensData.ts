@@ -3,13 +3,22 @@ import { getApiUrl } from "../constants";
 import { BiggestCoinData } from "../utils/types";
 import { mockTokensData } from "../mocks/tokensData";
 
+declare global {
+  interface ImportMetaEnv {
+    VITE_USE_MOCKS?: string;
+  }
+  interface ImportMeta {
+    env: ImportMetaEnv;
+  }
+}
+
+const useMocks = import.meta.env.VITE_USE_MOCKS === 'true';
+
 export const useTokensData = () => {
-  const shouldUseMockData = false;
-  
   return useQuery<BiggestCoinData[]>({
     queryKey: ["cryptoolsTokensData"],
     queryFn: async () => {
-      if (shouldUseMockData) {
+      if (useMocks) {
         // Return mock data for testing
         return Promise.resolve(mockTokensData);
       }
