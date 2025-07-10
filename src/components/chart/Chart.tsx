@@ -1,4 +1,4 @@
-import { createChart, ColorType } from "lightweight-charts";
+import { createChart, ColorType, AreaData } from "lightweight-charts";
 import { ChartComponentProps } from "../../utils/types";
 import { useRef, useEffect } from "react";
 
@@ -17,7 +17,7 @@ export const ChartComponent = (props: ChartComponentProps) => {
 	const chartContainerRef = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
-		if (data === undefined) return;
+		if (data === undefined || !Array.isArray(data) || data.length === 0) return;
 
 		const handleResize = () => {
 			chart.applyOptions({
@@ -55,6 +55,12 @@ export const ChartComponent = (props: ChartComponentProps) => {
 		});
 		chart.timeScale().fitContent();
 
+		// Transform data to the format expected by lightweight-charts
+		const chartData: AreaData[] = data.map((value, index) => ({
+			time: index as any, // Using index as time for sparkline data
+			value: typeof value === 'number' ? value : parseFloat(String(value)) || 0,
+		}));
+
 		const newSeries = chart.addAreaSeries({
 			lineColor,
 			topColor: areaTopColor,
@@ -62,13 +68,12 @@ export const ChartComponent = (props: ChartComponentProps) => {
 			lastValueVisible: true,
 			priceLineVisible: false,
 		});
-		newSeries.setData(data);
+		newSeries.setData(chartData);
 
 		window.addEventListener("resize", handleResize);
 
 		return () => {
 			window.removeEventListener("resize", handleResize);
-
 			chart.remove();
 		};
 	}, [
