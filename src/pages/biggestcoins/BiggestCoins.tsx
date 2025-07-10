@@ -14,7 +14,7 @@ const BiggestCoins = ({ setSettingsButton }: BiggestCoinsProps) => {
 		wrapped: true,
 	});
 
-	const { isLoading, error, data } = useTokensData(true); // Use mock data for testing
+	const { isLoading, error, data } = useTokensData();
 
 	useEffect(() => {
 		return () => setSettingsButton();
