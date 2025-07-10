@@ -46,9 +46,42 @@ const VotesComponent = (props: VotesComponentProps) => {
 const News = () => {
 	const { isLoading, error, data } = useNewsData();
 
-	if (error) return <>&apos;An error has occurred: &apos; + error.message</>;
+	if (error) {
+		console.error('News component error:', error);
+		return (
+			<StyledBoxForPages
+				id="news"
+				sx={{ top: APP_BAR_HEIGHT, overflowX: "hidden" }}
+			>
+				<Container maxWidth="md" sx={{ p: 2 }}>
+					<Typography variant="h6" color="error">
+						An error has occurred: {error.message}
+					</Typography>
+					<Typography variant="body2" sx={{ mt: 1 }}>
+						Please check the console for more details.
+					</Typography>
+				</Container>
+			</StyledBoxForPages>
+		);
+	}
 
 	if (isLoading) return <Skeleton variant="rounded" height={60} />;
+
+	// Handle empty data
+	if (!data || data.length === 0) {
+		return (
+			<StyledBoxForPages
+				id="news"
+				sx={{ top: APP_BAR_HEIGHT, overflowX: "hidden" }}
+			>
+				<Container maxWidth="md" sx={{ p: 2 }}>
+					<Typography variant="h6">
+						No news articles available at the moment.
+					</Typography>
+				</Container>
+			</StyledBoxForPages>
+		);
+	}
 
 	return (
 		<StyledBoxForPages

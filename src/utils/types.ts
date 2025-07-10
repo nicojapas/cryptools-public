@@ -218,7 +218,7 @@ export interface RawNewsData {
 }
 
 export interface NewsData {
-  url: string;
+  url: string | null;
   timeSincePublished: string;
   title: string;
   votes: NewsVotes;
