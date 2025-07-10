@@ -18,7 +18,7 @@ import TableRow from "@mui/material/TableRow";
 import Tooltip from "@mui/material/Tooltip";
 
 import {
-	API_URL,
+	// API_URL,
 	APP_BAR_HEIGHT,
 	BSCSCAN_ICON,
 	BSCSCAN_ADDRESS_URL,
@@ -45,32 +45,39 @@ const BscSniffer = () => {
 	const { isLoading, error, data } = useQuery<BscTokenData[]>({
 		queryKey: ["cryptoolsNewBscTokensData"],
 		queryFn: () =>
-			fetch(new URL("new_bsc_tokens", API_URL).toString())
-				.then((response) => response.arrayBuffer())
-				.then((buffer) => {
-					const decoder = new TextDecoder("utf-8");
-					const csvString = decoder.decode(buffer);
-					const rows = csvString.trim().split("\n");
-					const header = rows.shift()?.split(",");
-					if (!header) return [];
-					
-					const data: BscTokenData[] = rows.map((row) => {
-						const values = row.split(",");
-						return header.reduce((object: BscTokenData, key: string, index: number) => {
-							object[key] = values[index] || "";
-							return object;
-						}, {} as BscTokenData);
-					});
-					data.reverse();
-					const now = new Date().getTime() / 1000;
-					data.forEach((row) => {
-						const timestamp = parseInt(row.timestamp);
-						const difference = now - timestamp;
-						row.timestamp = getTimeDifferenceString(difference);
-					});
+			getApiUrl()
+				.then((API_URL) =>
+					fetch(new URL("new_bsc_tokens", API_URL).toString())
+						.then((response) => response.arrayBuffer())
+						.then((buffer) => {
+							const decoder = new TextDecoder("utf-8");
+							const csvString = decoder.decode(buffer);
+							const rows = csvString.trim().split("\n");
+							const header = rows.shift()?.split(",");
+							if (!header) return [];
+							
+							const data: BscTokenData[] = rows.map((row) => {
+								const values = row.split(",");
+								return header.reduce((object: BscTokenData, key: string, index: number) => {
+									object[key] = values[index] || "";
+									return object;
+								}, {} as BscTokenData);
+							});
+							data.reverse();
+							const now = new Date().getTime() / 1000;
+							data.forEach((row) => {
+								const timestamp = parseInt(row.timestamp);
+								const difference = now - timestamp;
+								row.timestamp = getTimeDifferenceString(difference);
+							});
 
-					return data;
-				})
+							return data;
+						})
+						.catch((error) => {
+							console.error(error);
+							return [];
+						})
+				)
 				.catch((error) => {
 					console.error(error);
 					return [];

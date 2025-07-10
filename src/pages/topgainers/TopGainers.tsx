@@ -10,7 +10,7 @@ import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-import { APP_BAR_HEIGHT, API_URL } from "../../constants.js";
+import { APP_BAR_HEIGHT, getApiUrl } from "../../constants.js";
 import { Coin } from "../../utils/types";
 
 interface CustomCardProps extends Coin {
@@ -20,10 +20,12 @@ interface CustomCardProps extends Coin {
 const Gainers = () => {
 	const { isLoading, error, data } = useQuery<Coin[], Error>({
 		queryKey: ["cryptoolsGainersData"],
-		queryFn: () =>
-			fetch(new URL("gainers", API_URL).toString()).then((res) =>
+		queryFn: async () => {
+			const API_URL = await getApiUrl();
+			return fetch(new URL("gainers", API_URL).toString()).then((res) =>
 				res.json()
-			),
+			);
+		},
 	});
 
 	if (error) return <>&apos;An error has occurred: &apos; + {(error instanceof Error ? error.message : "Unknown error")}</>;

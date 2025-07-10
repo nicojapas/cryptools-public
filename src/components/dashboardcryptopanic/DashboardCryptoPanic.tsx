@@ -15,16 +15,18 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import Typography from "@mui/material/Typography";
 import WarningIcon from "@mui/icons-material/Warning";
 
-import { API_URL } from "../../constants";
+import { getApiUrl } from "../../constants";
 import { DashboardCryptoPanicData } from "../../utils/types";
 
 export const DashboardCryptoPanic = () => {
 	// const { isLoading, error, data } = useQuery({
 	// 	queryKey: ["cryptoolsHomeNewsData"],
-	// 	queryFn: () =>
+	// 	queryFn: async () => {
+	// 		const API_URL = await getApiUrl();
 	// 		fetch(new URL("home_news", API_URL).toString()).then((res) =>
 	// 			res.json()
-	// 		),
+	// 		);
+	// 	},
 	// });
 
 	// if (error) return "An error has occurred: " + error.message;

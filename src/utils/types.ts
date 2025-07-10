@@ -321,7 +321,7 @@ export interface SettingsState {
 }
 
 export interface BiggestCoinsProps {
-  setSettingsButton: (button?: React.FC) => void;
+  setSettingsButton: (button?: React.ReactElement) => void;
 }
 
 export interface CoinCardProps {
@@ -331,7 +331,7 @@ export interface CoinCardProps {
 export interface SettingsProps {
   settingsState: SettingsState;
   setSettingsState: (state: SettingsState) => void;
-  setSettingsButton: (button?: React.FC) => void;
+  setSettingsButton: (button?: React.ReactElement) => void;
 }
 
 export interface TradePanelProps {

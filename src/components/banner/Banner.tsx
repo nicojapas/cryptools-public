@@ -7,7 +7,7 @@ import CardMedia from "@mui/material/CardMedia";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-import { API_URL } from "../../constants";
+import { useBannerData } from "../../hooks";
 import { Coin } from "../../utils/types";
 
 import "./banner.css";
@@ -112,17 +112,7 @@ const Banner = ({ className }: BannerProps) => {
 		);
 	};
 
-	const { error, data } = useQuery<Coin[], Error>({
-		queryKey: ["data"],
-		queryFn: async () => {
-			const response = await fetch(`${API_URL}/banner`);
-			if (!response.ok) {
-				throw new Error(`Error: ${response.status}`);
-			}
-			const json = await response.json();
-			return json.data as Coin[];
-		},
-	});
+	const { error, data } = useBannerData();
 
 	if (error) return "An error has occurred: " + (error instanceof Error ? error.message : "Unknown error");
 

@@ -10,16 +10,18 @@ import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-import { APP_BAR_HEIGHT, API_URL } from "../../constants.js";
+import { APP_BAR_HEIGHT, getApiUrl } from "../../constants.js";
 import { Coin, LoserCardProps } from "../../utils/types";
 
 const Losers = () => {
 	const { isLoading, error, data } = useQuery<Coin[], Error>({
 		queryKey: ["cryptoolsLosersData"],
-		queryFn: () =>
-			fetch(new URL("losers", API_URL).toString()).then((res) =>
+		queryFn: async () => {
+			const API_URL = await getApiUrl();
+			return fetch(new URL("losers", API_URL).toString()).then((res) =>
 				res.json()
-			),
+			);
+		},
 	});
 
 	if (error) return <>&#39;An error has occurred: &#39; + {(error instanceof Error ? error.message : "Unknown error")}</>;

@@ -16,7 +16,7 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import Typography from "@mui/material/Typography";
 import WarningIcon from "@mui/icons-material/Warning";
 
-import { APP_BAR_HEIGHT, API_URL } from "../../constants.js";
+import { APP_BAR_HEIGHT, getApiUrl } from "../../constants.js";
 import { StyledBoxForPages, StyledPaper } from "../../components";
 import { VoteMap, VotesComponentProps, NewsData } from "../../utils/types";
 

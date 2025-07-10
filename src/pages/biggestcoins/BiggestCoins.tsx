@@ -1,5 +1,5 @@
 import { Skeleton } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 
@@ -16,14 +16,10 @@ const BiggestCoins = ({ setSettingsButton }: BiggestCoinsProps) => {
 
 	const { isLoading, error, data } = useTokensData();
 
-	useEffect(() => {
-		return () => setSettingsButton();
-	}, [setSettingsButton]);
-
 	if (error) return <div>An error has occurred: {error.message}</div>;
-	if (isLoading) return <Skeleton variant="rounded" height={60} />;
+	if (isLoading || !data) return <Skeleton variant="rounded" height={60} />;
 
-	const filteredData = (data || []).filter(coin => 
+	const filteredData = data.filter(coin => 
 		(!coin.stable || settingsState.stable) && (!coin.wrapped || settingsState.wrapped)
 	);
 

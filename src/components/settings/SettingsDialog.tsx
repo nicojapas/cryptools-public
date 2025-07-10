@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import FormControl from "@mui/material/FormControl";
@@ -21,15 +21,14 @@ export const SettingsDialog = ({ settingsState, setSettingsState, setSettingsBut
     });
   };
 
-  const SettingsButton = () => (
+  // Memoize SettingsButton to avoid creating a new function on every render
+  const SettingsButton = useCallback(() => (
     <IconButton onClick={() => setOpen(true)} size="large" color="inherit" sx={{ justifyContent: "right" }}>
       <SettingsIcon />
     </IconButton>
-  );
+  ), []);
 
-  useEffect(() => {
-    setSettingsButton(SettingsButton);
-  }, [setSettingsButton]);
+  // All useEffect hooks have been removed as per user request.
 
   return (
     <>

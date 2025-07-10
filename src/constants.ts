@@ -2,14 +2,19 @@ import ABI_ERC20 from './abi/ERC20.json';
 import ABI_NAME_SYMBOL from './abi/NameSymbol.json';
 import ABI_SAFU_TEST from "./abi/SafuTest.json";
 import PS_ROUTER_ABI from "./abi/IPancakeRouter02.json";
-import {invokeUrl} from "../public/config.json"
 
 export {ABI_ERC20};
 export {ABI_NAME_SYMBOL};
 export {ABI_SAFU_TEST};
 export {PS_ROUTER_ABI};
 
-export const API_URL = invokeUrl;
+// Provide a function to fetch the API URL from config.json at runtime
+export async function getApiUrl(): Promise<string> {
+  const response = await fetch('/cryptools-public/config.json');
+  const config = await response.json();
+  return config.invokeUrl;
+}
+
 export const APP_BAR_HEIGHT = 64;
 export const WBNB_ADDRESS = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
 export const DOGE_ADDRESS = "0xba2ae424d960c26247dd6c32edc70b295c744c43";

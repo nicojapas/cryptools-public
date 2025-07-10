@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { createContext, useState, useMemo, useEffect } from "react";
+import { createContext, useState, useMemo } from "react";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import DarkModeIcon from "@mui/icons-material/DarkMode";
@@ -39,8 +39,8 @@ const App = () => {
 	const [themeMode, setThemeMode] = useState("light");
 	const [settingsButton, setSettingsButton] = useState<React.ReactElement | undefined>(undefined);
 	
-	const handleSetSettingsButton = (button?: React.FC) => {
-		setSettingsButton(button ? <button /> : undefined);
+	const handleSetSettingsButton = (button?: React.ReactElement) => {
+		setSettingsButton(button);
 	};
 
 	const colorMode = useMemo(
@@ -53,19 +53,16 @@ const App = () => {
 		}),
 		[]
 	);
-	const ThemeModeButton = () => {
-    return (
-        <IconButton
-            size="large"
-            onClick={() => colorMode.toggleColorMode()}
-            color="inherit"
-            sx={{ justifyContent: "right" }}
-        >
-            {themeMode === "dark" ? <DarkModeIcon /> : <LightModeIcon />}
-        </IconButton>
-    );
-};
-
+	const ThemeModeButton = useMemo(() => (
+    <IconButton
+        size="large"
+        onClick={() => colorMode.toggleColorMode()}
+        color="inherit"
+        sx={{ justifyContent: "right" }}
+    >
+        {themeMode === "dark" ? <DarkModeIcon /> : <LightModeIcon />}
+    </IconButton>
+), [colorMode, themeMode]);
 
 
 	return (
@@ -75,7 +72,7 @@ const App = () => {
 					<CssBaseline />
 					<BrowserRouter basename="/cryptools-public">
 						<CryptoolsAppBar
-							themeModeButton={<ThemeModeButton />}
+							themeModeButton={ThemeModeButton}
 							settingsButton={settingsButton || <div />}
 						/>
 						<div style={{ position: 'relative', height: '100vh', paddingTop: '64px' }}>

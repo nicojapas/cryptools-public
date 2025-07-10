@@ -6,7 +6,7 @@ import Grid from "@mui/material/Grid";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
 
-import { APP_BAR_HEIGHT, API_URL } from "../../constants.js";
+import { APP_BAR_HEIGHT, getApiUrl } from "../../constants.js";
 import { StyledBoxForPages } from "../../components";
 import { CustomCardProps, NFTData } from "../../utils/types";
 
@@ -14,10 +14,12 @@ const Nfts = () => {
 	const cardHeight = "250px";
 	const { isLoading, error, data } = useQuery<NFTData[]>({
 		queryKey: ["cryptoolsNftsData"],
-		queryFn: () =>
-			fetch(new URL("nfts", API_URL).toString())
+		queryFn: async () => {
+			const API_URL = await getApiUrl();
+			return fetch(new URL("nfts", API_URL).toString())
 				.then((res) => res.json())
-				.catch((e) => console.log(e.message)),
+				.catch((e) => console.log(e.message));
+		},
 	});
 
 	if (error) return <>&apos;An error has occurred: &apos; + error.message</>;

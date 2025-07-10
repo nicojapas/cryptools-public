@@ -9,7 +9,7 @@ import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 
-import { APP_BAR_HEIGHT, API_URL } from "../../constants.js";
+import { APP_BAR_HEIGHT, getApiUrl } from "../../constants.js";
 import { StyledBoxForPages } from "../../components";
 import { TrendingCoinData, TrendingCoinItem, TrendingCoinCardProps } from "../../utils/types";
 
@@ -19,10 +19,12 @@ const fire = "/src/assets/fire3.gif";
 const TrendingCoins = () => {
 	const { isLoading, error, data } = useQuery<TrendingCoinItem[]>({
 		queryKey: ["cryptoolsTrendingData"],
-		queryFn: () =>
-			fetch(new URL("trending", API_URL).toString()).then((res) =>
+		queryFn: async () => {
+			const API_URL = await getApiUrl();
+			return fetch(new URL("trending", API_URL).toString()).then((res) =>
 				res.json().then((data: TrendingCoinData) => data.coins.map((obj: { item: TrendingCoinItem }) => obj.item))
-			),
+			);
+		},
 	});
 
 	if (error) return <>&apos;An error has occurred: &apos; + error.message</>;

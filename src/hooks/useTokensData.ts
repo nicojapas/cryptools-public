@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { API_URL } from "../constants";
+import { getApiUrl } from "../constants";
 import { BiggestCoinData } from "../utils/types";
 import { mockTokensData } from "../mocks/tokensData";
 
@@ -8,13 +8,17 @@ export const useTokensData = () => {
   
   return useQuery<BiggestCoinData[]>({
     queryKey: ["cryptoolsTokensData"],
-    queryFn: () => {
+    queryFn: async () => {
       if (shouldUseMockData) {
         // Return mock data for testing
         return Promise.resolve(mockTokensData);
       }
-      // Return real API data
-      return fetch(new URL("tokens", API_URL).toString()).then((res) => res.json());
+      // Fetch API URL dynamically
+      const API_URL = await getApiUrl();
+      const url = new URL("tokens", API_URL).toString();
+      const res = await fetch(url);
+      const data = await res.json();
+      return data.data;
     },
     retry: false,
   });
