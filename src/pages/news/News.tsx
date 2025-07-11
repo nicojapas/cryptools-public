@@ -19,6 +19,7 @@ import { APP_BAR_HEIGHT } from "../../constants.js";
 import { StyledBoxForPages, StyledPaper } from "../../components";
 import { VoteMap, VotesComponentProps, NewsData } from "../../utils/types";
 import { useNewsData } from "../../hooks";
+import { SidePanel } from "../bscsniffer/elements";
 
 const VOTES_MAP: VoteMap = {
 	toxic: { color: "primary.dark", icon: CoronavirusIcon },
@@ -51,9 +52,9 @@ const News = () => {
 		return (
 			<StyledBoxForPages
 				id="news"
-				sx={{ top: APP_BAR_HEIGHT, overflowX: "hidden" }}
+				sx={{ top: APP_BAR_HEIGHT, overflowX: "hidden", height: `calc(100vh - ${APP_BAR_HEIGHT})` }}
 			>
-				<Container maxWidth="md" sx={{ p: 2 }}>
+				<Container maxWidth="lg" sx={{ p: 2, height: '100%' }}>
 					<Typography variant="h6" color="error">
 						An error has occurred: {error.message}
 					</Typography>
@@ -72,9 +73,9 @@ const News = () => {
 		return (
 			<StyledBoxForPages
 				id="news"
-				sx={{ top: APP_BAR_HEIGHT, overflowX: "hidden" }}
+				sx={{ top: APP_BAR_HEIGHT, overflowX: "hidden", height: `calc(100vh - ${APP_BAR_HEIGHT})` }}
 			>
-				<Container maxWidth="md" sx={{ p: 2 }}>
+				<Container maxWidth="lg" sx={{ p: 2, height: '100%' }}>
 					<Typography variant="h6">
 						No news articles available at the moment.
 					</Typography>
@@ -86,54 +87,63 @@ const News = () => {
 	return (
 		<StyledBoxForPages
 			id="news"
-			sx={{ top: APP_BAR_HEIGHT, overflowX: "hidden" }}
+			sx={{ top: APP_BAR_HEIGHT, overflowX: "hidden", height: `calc(100vh - ${APP_BAR_HEIGHT})` }}
 		>
-			<Container maxWidth="md" sx={{ p: 2 }}>
-				<Grid container alignItems="stretch">
-					<StyledPaper>
-						{Array.from(data || []).map((el: NewsData, index: number) => (
-							<Grid
-								item
-								xs={12}
-								sx={{ display: "grid" }}
-								key={index}
-							>
-								<CardActionArea
+			<Container maxWidth="lg" sx={{ p: 2, height: '100%' }}>
+				<Grid container spacing={2} sx={{ height: '100%' }}>
+					{/* Left side panel */}
+					<SidePanel isLeft={true} />
+
+					{/* Main news content */}
+					<Grid item xs={12} md={8} sx={{ height: '100%' }}>
+						<StyledPaper sx={{ height: '100%', overflow: 'auto' }}>
+							{Array.from(data || []).map((el: NewsData, index: number) => (
+								<Grid
+									item
+									xs={12}
+									sx={{ display: "grid" }}
 									key={index}
-									onClick={() => el.url && window.open(el.url)}
-									disabled={!el.url}
 								>
-									{index > 0 ? <Divider /> : null}
-									<Stack>
-										<Stack direction="row" sx={{ p: 1 }}>
-											<Typography
-												variant="body1"
-												sx={{ pr: 2 }}
-											>
-												{el.timeSincePublished}
-											</Typography>
-											<Typography variant="body1">
-												{el.title}
-											</Typography>
+									<CardActionArea
+										key={index}
+										onClick={() => el.url && window.open(el.url)}
+										disabled={!el.url}
+									>
+										{index > 0 ? <Divider /> : null}
+										<Stack>
+											<Stack direction="row" sx={{ p: 1 }}>
+												<Typography
+													variant="body1"
+													sx={{ pr: 2 }}
+												>
+													{el.timeSincePublished}
+												</Typography>
+												<Typography variant="body1">
+													{el.title}
+												</Typography>
+											</Stack>
+											<Stack direction="row" sx={{ ml: 5 }}>
+												{Object.entries(VOTES_MAP).map(
+													([key, value]) =>
+														!!el.votes[key as keyof typeof el.votes] && (
+															<VotesComponent
+																key={key}
+																color={value.color}
+																n={el.votes[key as keyof typeof el.votes] || 0}
+																icon={value.icon}
+															/>
+														)
+												)}
+											</Stack>
 										</Stack>
-										<Stack direction="row" sx={{ ml: 5 }}>
-											{Object.entries(VOTES_MAP).map(
-												([key, value]) =>
-													!!el.votes[key as keyof typeof el.votes] && (
-														<VotesComponent
-															key={key}
-															color={value.color}
-															n={el.votes[key as keyof typeof el.votes] || 0}
-															icon={value.icon}
-														/>
-													)
-											)}
-										</Stack>
-									</Stack>
-								</CardActionArea>
-							</Grid>
-						))}
-					</StyledPaper>
+									</CardActionArea>
+								</Grid>
+							))}
+						</StyledPaper>
+					</Grid>
+
+					{/* Right side panel */}
+					<SidePanel isLeft={false} />
 				</Grid>
 			</Container>
 		</StyledBoxForPages>
