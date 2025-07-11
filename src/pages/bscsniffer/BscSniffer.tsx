@@ -27,6 +27,7 @@ import {
 import { StyledBoxForPages } from "../../components";
 import { useBscTokensData } from "../../hooks";
 import { BscTokenData, TokenTableRowProps } from "../../utils/types";
+import { SidePanel, ActionButton } from "./elements";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
 	[`&.${tableCellClasses.head}`]: {
@@ -40,11 +41,9 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 
 const BscSniffer = () => {
 	const [hovered, setHovered] = useState<number | undefined>();
-
 	const { isLoading, error, data } = useBscTokensData();
 
 	if (error) return <>&apos;An error has occurred: &apos; + error.message</>;
-
 	if (isLoading) return <Skeleton variant="rounded" height={60} />;
 
 	// Sort tokens by timestamp (most recent first)
@@ -53,46 +52,48 @@ const BscSniffer = () => {
 	return (
 		<StyledBoxForPages
 			id="news"
-			sx={{ top: APP_BAR_HEIGHT, overflowX: "hidden" }}
+			sx={{ top: APP_BAR_HEIGHT, overflowX: "hidden", height: `calc(100vh - ${APP_BAR_HEIGHT})` }}
 		>
-			<Container maxWidth="md" sx={{ p: 2 }}>
-				<TableContainer component={Paper}>
-					<Table>
-						<TableHead>
-							<TableRow sx={{}}>
-								<StyledTableCell
-									align="left"
-									sx={{ width: "20%" }}
-								>
-									Creation
-								</StyledTableCell>
-								<StyledTableCell
-									align="left"
-									sx={{ width: "40%" }}
-								>
-									Name
-								</StyledTableCell>
-								<StyledTableCell
-									align="left"
-									sx={{ width: "40%" }}
-								>
-									Symbol
-								</StyledTableCell>
-							</TableRow>
-						</TableHead>
-						<TableBody>
-							{sortedData.map((token: BscTokenData, index: number) => (
-								<TokenTableRow
-									key={index}
-									id={index}
-									hovered={hovered}
-									setHovered={setHovered}
-									token={token}
-								/>
-							))}
-						</TableBody>
-					</Table>
-				</TableContainer>
+			<Container maxWidth="lg" sx={{ p: 2, height: '100%' }}>
+				<Grid container spacing={2} sx={{ height: '100%' }}>
+					{/* Left side panel */}
+					<SidePanel isLeft={true} />
+
+					{/* Main table */}
+					<Grid item xs={12} md={8} sx={{ height: '100%' }}>
+						<TableContainer component={Paper} sx={{ height: '100%' }}>
+							<Table stickyHeader>
+								<TableHead>
+									<TableRow>
+										<StyledTableCell align="left" sx={{ width: "20%" }}>
+											Creation
+										</StyledTableCell>
+										<StyledTableCell align="left" sx={{ width: "40%" }}>
+											Name
+										</StyledTableCell>
+										<StyledTableCell align="left" sx={{ width: "40%" }}>
+											Symbol
+										</StyledTableCell>
+									</TableRow>
+								</TableHead>
+								<TableBody>
+									{sortedData.map((token: BscTokenData, index: number) => (
+										<TokenTableRow
+											key={index}
+											id={index}
+											hovered={hovered}
+											setHovered={setHovered}
+											token={token}
+										/>
+									))}
+								</TableBody>
+							</Table>
+						</TableContainer>
+					</Grid>
+
+					{/* Right side panel */}
+					<SidePanel isLeft={false} />
+				</Grid>
 			</Container>
 		</StyledBoxForPages>
 	);
@@ -100,16 +101,24 @@ const BscSniffer = () => {
 
 const TokenTableRow = (props: TokenTableRowProps) => {
 	const { token, id, hovered, setHovered } = props;
-	const address = token.contract_address;
-	const creator = token.creator;
+	const { contract_address: address, creator } = token;
 	const navigate = useNavigate();
+
+	const handleRugCheck = () => navigate("/rug-checker", {
+		state: { redirectedTargetAddress: address }
+	});
+
+	const handleCopyAddress = () => navigator.clipboard.writeText(address);
+	const handleCopyCreator = () => navigator.clipboard.writeText(creator);
+	const handleBscscanToken = () => window.open(new URL(address, BSCSCAN_TOKEN_URL).href);
+	const handleBscscanCreator = () => window.open(new URL(creator, BSCSCAN_ADDRESS_URL).href);
+	const handlePoocoin = () => window.open(new URL(address, POOCOIN_URL).href);
 
 	return (
 		<TableRow
 			sx={{
 				height: "4.25rem",
-				backgroundColor:
-					hovered === id ? "background.default" : "unset",
+				backgroundColor: hovered === id ? "background.default" : "unset",
 			}}
 			onMouseEnter={() => setHovered(id)}
 			onMouseLeave={() => setHovered(undefined)}
@@ -123,234 +132,57 @@ const TokenTableRow = (props: TokenTableRowProps) => {
 					<TableCell align="left">{token.symbol}</TableCell>
 				</>
 			) : (
-				<>
-					<TableCell
-						colSpan={3}
-						align="left"
-						sx={{ textAlignLast: "center" }}
-					>
-						<Grid
-							container
-							justifyContent="space-between"
-							spacing={1}
+				<TableCell colSpan={3} align="left" sx={{ textAlignLast: "center" }}>
+					<Grid container justifyContent="space-between" spacing={1}>
+						<ActionButton
+							title="Rug Check!"
+							onClick={handleRugCheck}
+							startIcon={<GppGoodOutlinedIcon sx={{ height: "16px", width: "16px" }} />}
 						>
-							<Grid
-								item
-								xs={6}
-								md={"auto"}
-								sx={{ width: "100%" }}
-							>
-								<Tooltip
-									title="Rug Check!"
-									arrow
-									placement="bottom"
-								>
-									<Button
-										startIcon={
-											<GppGoodOutlinedIcon
-												sx={{
-													height: "16px",
-													width: "16px",
-												}}
-											/>
-										}
-										variant="outlined"
-										onClick={() =>
-											navigate("/rug-checker", {
-												state: {
-													redirectedTargetAddress:
-														address,
-												},
-											})
-										}
-										color="secondary"
-										sx={{ pt: 0, pb: 0, width: "100%" }}
-									>
-										Rug Check!
-									</Button>
-								</Tooltip>
-							</Grid>
-							<Grid
-								item
-								xs={6}
-								md={"auto"}
-								sx={{ width: "100%" }}
-							>
-								<Tooltip
-									title={`Copy ${address}`}
-									arrow
-									placement="bottom"
-								>
-									<Button
-										startIcon={
-											<ContentCopyIcon
-												sx={{
-													height: "16px",
-													width: "16px",
-												}}
-											/>
-										}
-										variant="outlined"
-										onClick={() =>
-											navigator.clipboard.writeText(
-												address
-											)
-										}
-										sx={{ pt: 0, pb: 0, width: "100%" }}
-										color="secondary"
-									>
-										Contract Address
-									</Button>
-								</Tooltip>
-							</Grid>
-							<Grid
-								item
-								xs={6}
-								md={"auto"}
-								sx={{ width: "100%" }}
-							>
-								<Tooltip
-									title="Check token address in Bscscan"
-									arrow
-									placement="bottom"
-								>
-									<Button
-										startIcon={
-											<img
-												src={BSCSCAN_ICON}
-												alt="Bscscan icon."
-												style={{
-													height: "16px",
-													width: "16px",
-												}}
-											/>
-										}
-										variant="outlined"
-										onClick={() =>
-											window.open(
-												new URL(
-													address,
-													BSCSCAN_TOKEN_URL
-												).href
-											)
-										}
-										sx={{ pt: 0, pb: 0, width: "100%" }}
-										color="secondary"
-									>
-										To Bscscan
-									</Button>
-								</Tooltip>
-							</Grid>
-							<Grid
-								item
-								xs={6}
-								md={"auto"}
-								sx={{ width: "100%" }}
-							>
-								<Tooltip
-									title="Check token in Poocoin"
-									arrow
-									placement="bottom"
-								>
-									<Button
-										startIcon={
-											<img
-												src={POOCOIN_ICON}
-												alt="Poocoin icon."
-												style={{
-													height: "16px",
-													width: "16px",
-												}}
-											/>
-										}
-										variant="outlined"
-										onClick={() =>
-											window.open(
-												new URL(address, POOCOIN_URL)
-													.href
-											)
-										}
-										sx={{ pt: 0, pb: 0, width: "100%" }}
-										color="secondary"
-									>
-										To Poocoin
-									</Button>
-								</Tooltip>
-							</Grid>
-							<Grid
-								item
-								xs={6}
-								md={"auto"}
-								sx={{ width: "100%" }}
-							>
-								<Tooltip
-									title={`Copy ${creator}`}
-									arrow
-									placement="bottom"
-								>
-									<Button
-										startIcon={
-											<ContentCopyIcon
-												sx={{
-													height: "16px",
-													width: "16px",
-												}}
-											/>
-										}
-										variant="outlined"
-										onClick={() =>
-											navigator.clipboard.writeText(
-												creator
-											)
-										}
-										sx={{ pt: 0, pb: 0, width: "100%" }}
-										color="secondary"
-									>
-										Creator Address
-									</Button>
-								</Tooltip>
-							</Grid>
-							<Grid
-								item
-								xs={6}
-								md={"auto"}
-								sx={{ width: "100%" }}
-							>
-								<Tooltip
-									title="Check creator address in Bscscan"
-									arrow
-									placement="bottom"
-								>
-									<Button
-										startIcon={
-											<img
-												src={BSCSCAN_ICON}
-												alt="Bscscan icon."
-												style={{
-													height: "16px",
-													width: "16px",
-												}}
-											/>
-										}
-										variant="outlined"
-										onClick={() =>
-											window.open(
-												new URL(
-													creator,
-													BSCSCAN_ADDRESS_URL
-												).href
-											)
-										}
-										sx={{ pt: 0, pb: 0, width: "100%" }}
-										color="secondary"
-									>
-										To Bscscan
-									</Button>
-								</Tooltip>
-							</Grid>
-						</Grid>
-					</TableCell>
-				</>
+							Rug Check!
+						</ActionButton>
+						
+						<ActionButton
+							title={`Copy ${address}`}
+							onClick={handleCopyAddress}
+							startIcon={<ContentCopyIcon sx={{ height: "16px", width: "16px" }} />}
+						>
+							Contract Address
+						</ActionButton>
+						
+						<ActionButton
+							title="Check token address in Bscscan"
+							onClick={handleBscscanToken}
+							startIcon={<img src={BSCSCAN_ICON} alt="Bscscan icon" style={{ height: "16px", width: "16px" }} />}
+						>
+							To Bscscan
+						</ActionButton>
+						
+						<ActionButton
+							title="Check token in Poocoin"
+							onClick={handlePoocoin}
+							startIcon={<img src={POOCOIN_ICON} alt="Poocoin icon" style={{ height: "16px", width: "16px" }} />}
+						>
+							To Poocoin
+						</ActionButton>
+						
+						<ActionButton
+							title={`Copy ${creator}`}
+							onClick={handleCopyCreator}
+							startIcon={<ContentCopyIcon sx={{ height: "16px", width: "16px" }} />}
+						>
+							Creator Address
+						</ActionButton>
+						
+						<ActionButton
+							title="Check creator address in Bscscan"
+							onClick={handleBscscanCreator}
+							startIcon={<img src={BSCSCAN_ICON} alt="Bscscan icon" style={{ height: "16px", width: "16px" }} />}
+						>
+							To Bscscan
+						</ActionButton>
+					</Grid>
+				</TableCell>
 			)}
 		</TableRow>
 	);
