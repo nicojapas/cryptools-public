@@ -1,8 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { getApiUrl } from "../constants";
-import { BiggestCoinData } from "../utils/types";
-import { mockTokensData } from "../mocks/tokensData";
+import { TrendingCoinItem } from "../utils/types";
+import { mockTrendingCoinsData } from "../mocks/trendingCoinsData";
 
 declare global {
   interface ImportMetaEnv {
@@ -14,26 +14,26 @@ declare global {
 }
 
 // Identity transformation for now
-const transformTokensData = (data: BiggestCoinData[]): BiggestCoinData[] => data;
+const transformTrendingCoinsData = (data: TrendingCoinItem[]): TrendingCoinItem[] => data;
 
-export const useTokensData = () => {
+export const useTrendingCoinsData = () => {
   const useMocks = import.meta.env.VITE_USE_MOCKS === 'true';
 
   const mockData = useMemo(() => {
     if (useMocks) {
-      return transformTokensData(mockTokensData);
+      return transformTrendingCoinsData(mockTrendingCoinsData);
     }
     return null;
   }, [useMocks]);
 
-  return useQuery<BiggestCoinData[], Error>({
-    queryKey: ["cryptoolsTokensData"],
+  return useQuery<TrendingCoinItem[], Error>({
+    queryKey: ["cryptoolsTrendingData"],
     queryFn: async () => {
       if (useMocks) {
         return mockData!;
       }
       const API_URL = await getApiUrl();
-      const url = new URL("tokens", API_URL).toString();
+      const url = new URL("trending", API_URL).toString();
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`Error: ${response.status}`);
@@ -46,10 +46,12 @@ export const useTokensData = () => {
         results = json.results;
       } else if (json.data && Array.isArray(json.data)) {
         results = json.data;
+      } else if (json.coins && Array.isArray(json.coins)) {
+        results = json.coins.map((obj: { item: TrendingCoinItem }) => obj.item);
       } else {
         throw new Error('Invalid API response structure');
       }
-      return transformTokensData(results as BiggestCoinData[]);
+      return transformTrendingCoinsData(results as TrendingCoinItem[]);
     },
     retry: false,
   });

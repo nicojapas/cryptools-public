@@ -1,6 +1,5 @@
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
@@ -18,7 +17,6 @@ import TableRow from "@mui/material/TableRow";
 import Tooltip from "@mui/material/Tooltip";
 
 import {
-	// API_URL,
 	APP_BAR_HEIGHT,
 	BSCSCAN_ICON,
 	BSCSCAN_ADDRESS_URL,
@@ -27,6 +25,7 @@ import {
 	POOCOIN_URL,
 } from "../../constants.js";
 import { StyledBoxForPages } from "../../components";
+import { useBscTokensData } from "../../hooks";
 import { BscTokenData, TokenTableRowProps } from "../../utils/types";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -42,69 +41,14 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 const BscSniffer = () => {
 	const [hovered, setHovered] = useState<number | undefined>();
 
-	const { isLoading, error, data } = useQuery<BscTokenData[]>({
-		queryKey: ["cryptoolsNewBscTokensData"],
-		queryFn: () =>
-			getApiUrl()
-				.then((API_URL) =>
-					fetch(new URL("new_bsc_tokens", API_URL).toString())
-						.then((response) => response.arrayBuffer())
-						.then((buffer) => {
-							const decoder = new TextDecoder("utf-8");
-							const csvString = decoder.decode(buffer);
-							const rows = csvString.trim().split("\n");
-							const header = rows.shift()?.split(",");
-							if (!header) return [];
-							
-							const data: BscTokenData[] = rows.map((row) => {
-								const values = row.split(",");
-								return header.reduce((object: BscTokenData, key: string, index: number) => {
-									object[key] = values[index] || "";
-									return object;
-								}, {} as BscTokenData);
-							});
-							data.reverse();
-							const now = new Date().getTime() / 1000;
-							data.forEach((row) => {
-								const timestamp = parseInt(row.timestamp);
-								const difference = now - timestamp;
-								row.timestamp = getTimeDifferenceString(difference);
-							});
-
-							return data;
-						})
-						.catch((error) => {
-							console.error(error);
-							return [];
-						})
-				)
-				.catch((error) => {
-					console.error(error);
-					return [];
-				}),
-		refetchInterval: 3000,
-	});
-
-	function getTimeDifferenceString(timeDifference: number): string {
-		const seconds = Math.floor(timeDifference);
-		const minutes = Math.floor(seconds / 60);
-		const hours = Math.floor(minutes / 60);
-		const days = Math.floor(hours / 24);
-
-		if (days > 0) {
-			return `${days}d ago`;
-		} else if (hours > 0) {
-			return `${hours}h ago`;
-		} else if (minutes > 0) {
-			return `${minutes}m ago`;
-		} else {
-			return `${seconds}s ago`;
-		}
-	}
+	const { isLoading, error, data } = useBscTokensData();
 
 	if (error) return <>&apos;An error has occurred: &apos; + error.message</>;
 
 	if (isLoading) return <Skeleton variant="rounded" height={60} />;
+
+	// Sort tokens by timestamp (most recent first)
+	const sortedData = (data || []).slice().sort((a, b) => Number(b.timestamp) - Number(a.timestamp));
 
 	return (
 		<StyledBoxForPages
@@ -137,7 +81,7 @@ const BscSniffer = () => {
 							</TableRow>
 						</TableHead>
 						<TableBody>
-							{(data || []).map((token: BscTokenData, index: number) => (
+							{sortedData.map((token: BscTokenData, index: number) => (
 								<TokenTableRow
 									key={index}
 									id={index}
