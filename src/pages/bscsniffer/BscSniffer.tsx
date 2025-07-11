@@ -56,8 +56,10 @@ const BscSniffer = () => {
 		>
 			<Container maxWidth="lg" sx={{ p: 2, height: '100%' }}>
 				<Grid container spacing={2} sx={{ height: '100%' }}>
-					{/* Left side panel */}
-					<SidePanel isLeft={true} />
+					{/* Left side panel - hidden on small screens */}
+					<Grid item xs={12} md={2} sx={{ display: { xs: 'none', md: 'block' }, height: '100%' }}>
+						<SidePanel isLeft={true} />
+					</Grid>
 
 					{/* Main table */}
 					<Grid item xs={12} md={8} sx={{ height: '100%' }}>
@@ -91,8 +93,10 @@ const BscSniffer = () => {
 						</TableContainer>
 					</Grid>
 
-					{/* Right side panel */}
-					<SidePanel isLeft={false} />
+					{/* Right side panel - hidden on small screens */}
+					<Grid item xs={12} md={2} sx={{ display: { xs: 'none', md: 'block' }, height: '100%' }}>
+						<SidePanel isLeft={false} />
+					</Grid>
 				</Grid>
 			</Container>
 		</StyledBoxForPages>
