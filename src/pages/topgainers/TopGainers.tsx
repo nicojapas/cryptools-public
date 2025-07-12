@@ -14,7 +14,7 @@ const Gainers = () => {
 	if (isLoading) return <Skeleton variant="rounded" height={60} />;
 
 	return (
-		<div id="hotprojects">
+		<div id="top-gainers">
 			<Box
 				sx={{
 					top: APP_BAR_HEIGHT,
@@ -27,7 +27,7 @@ const Gainers = () => {
 				}}
 			>
 				<Grid
-					id="hotprojects-grid-container"
+					id="top-gainers-grid-container"
 					container
 					alignItems="stretch"
 					spacing={1}

@@ -2,7 +2,7 @@ import { createContext, useContext, ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { getApiUrl } from "../constants";
-import { BiggestCoinData, Coin } from "../utils/types";
+import { BiggestCoinData, Coin, TrendingCoinItem } from "../utils/types";
 import { mockTokensData } from "../mocks/tokensData";
 
 declare global {
@@ -17,6 +17,7 @@ declare global {
 interface TokensDataContextType {
   biggestCoinsData: BiggestCoinData[] | undefined;
   topGainersData: Coin[] | undefined;
+  trendingCoinsData: TrendingCoinItem[] | undefined;
   isLoading: boolean;
   error: Error | null;
 }
@@ -61,6 +62,7 @@ export const TokensDataProvider = ({ children }: TokensDataProviderProps) => {
   const contextValue: TokensDataContextType = {
     biggestCoinsData: data?.biggestCoins,
     topGainersData: data?.topGainers,
+    trendingCoinsData: data?.trendingCoins,
     isLoading,
     error: error as Error | null,
   };

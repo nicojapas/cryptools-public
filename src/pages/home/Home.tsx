@@ -33,7 +33,7 @@ const Home = (props: HomeProps) => {
 		{ icon: ShowChartOutlinedIcon, page: "charts" },
 		{ icon: FeedOutlinedIcon, page: "news" },
 		{ icon: BrushOutlinedIcon, page: "nfts" },
-		{ icon: LocalFireDepartmentOutlinedIcon, page: "hot-projects" },
+		{ icon: LocalFireDepartmentOutlinedIcon, page: "trending" },
 		{ icon: GppGoodOutlinedIcon, page: "rug-checker" },
 		{ icon: GpsFixedOutlinedIcon, page: "sniper" },
 		{ icon: RocketLaunchOutlinedIcon, page: "top-gainers" },

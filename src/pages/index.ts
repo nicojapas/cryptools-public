@@ -2,7 +2,7 @@ export { default as BiggestCoins } from './biggestcoins/BiggestCoins';
 export { default as BscSniffer } from './bscsniffer/BscSniffer';
 export { default as Charts } from './charts/Charts';
 export { default as Home } from './home/Home';
-export { default as HotProjects } from './hotprojects/HotProjects';
+export { default as Trending } from './trending/Trending';
 export { default as News } from './news/News';
 export { default as Nfts } from './nfts/Nfts';
 export { default as RugChecker } from './rugchecker/RugChecker';

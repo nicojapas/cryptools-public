@@ -11,7 +11,7 @@ import {
 	BiggestCoins,
 	News,
 	Charts,
-	HotProjects,
+	Trending,
 	TopGainers,
 	WorstLosers,
 	RugChecker,
@@ -93,7 +93,7 @@ const App = () => {
 									<Route path="/biggest-coins" element={<BiggestCoins setSettingsButton={handleSetSettingsButton} />} />
 									<Route path="/nfts" element={<Soon />} />
 									<Route path="/charts" element={<Charts />} />
-									<Route path="/hot-projects" element={<HotProjects />} />
+									<Route path="/trending" element={<Trending />} />
 									<Route path="/top-gainers" element={<TopGainers />} />
 									<Route path="/worst-losers" element={<WorstLosers />} />
 									<Route path="/rug-checker" element={<RugChecker />} />
