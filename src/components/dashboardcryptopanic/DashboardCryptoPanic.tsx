@@ -1,5 +1,4 @@
-import React from "react";
-import { useQuery } from "@tanstack/react-query";
+
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import CardActionArea from "@mui/material/CardActionArea";
@@ -7,7 +6,7 @@ import CommentIcon from "@mui/icons-material/Comment";
 import CoronavirusIcon from "@mui/icons-material/Coronavirus";
 import Divider from "@mui/material/Divider";
 import SentimentVerySatisfiedIcon from "@mui/icons-material/SentimentVerySatisfied";
-import Skeleton from "@mui/material/Skeleton";
+
 import Stack from "@mui/material/Stack";
 import StarIcon from "@mui/icons-material/Star";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
@@ -15,7 +14,7 @@ import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import Typography from "@mui/material/Typography";
 import WarningIcon from "@mui/icons-material/Warning";
 
-import { getApiUrl } from "../../constants";
+
 import { DashboardCryptoPanicData } from "../../utils/types";
 
 export const DashboardCryptoPanic = () => {

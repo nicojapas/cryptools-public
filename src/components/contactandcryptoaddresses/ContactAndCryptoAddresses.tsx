@@ -12,7 +12,7 @@ import VolunteerActivismIcon from "@mui/icons-material/VolunteerActivism";
 import { useState } from "react";
 const ContactAndAddresses = () => {
 	const [open, setOpen] = useState(false);
-	const [selected, setSelected] = useState();
+	const [selected, setSelected] = useState<string | undefined>(undefined);
 
 	const cryptoAddresses = [
 		{
@@ -37,15 +37,15 @@ const ContactAndAddresses = () => {
 
 	const handleClose = () => {
 		setOpen(false);
-		setSelected(null);
+		setSelected(undefined);
 	};
 
-	const handleButtonClick = (e, value, text) => {
+	const handleButtonClick = (_e: React.MouseEvent, value: string, text: string) => {
 		navigator.clipboard.writeText(text);
 		setSelected(value);
 	};
 
-	const CryptoAddresses = (props) => {
+	const CryptoAddresses = () => {
 		return (
 			<ToggleButtonGroup
 				orientation="vertical"
@@ -92,7 +92,7 @@ const ContactAndAddresses = () => {
 		);
 	};
 
-	const EmailAddress = (props) => {
+	const EmailAddress = () => {
 		return (
 			<Box sx={{ minHeight: 24, mt: 2 }}>
 				<Typography variant="body1" noWrap sx={{ textAlign: "center" }}>

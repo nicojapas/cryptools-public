@@ -28,8 +28,7 @@ import {
 	TxsPanel,
 } from "../../components";
 import { useLocation } from "react-router-dom";
-import { ContentPasteSearchOutlined } from "@mui/icons-material";
-import { TargetData, WalletPanelProps, SniperSettingsPanelProps, TsxPanelProps, ExternalSiteButtonProps, PoocoinItemProps, BscScanItemProps, EthereumProvider } from "../../utils/types";
+import { TargetData, ExternalSiteButtonProps, PoocoinItemProps, BscScanItemProps } from "../../utils/types";
 
 export const Sniper = () => {
 	const { ethereum } = window;
@@ -38,7 +37,7 @@ export const Sniper = () => {
 	const [balance, setBalance] = useState<string | undefined>();
 	const [targetAddressInput, setTargetAddressInput] = useState<string | undefined>();
 	const [targetAddress, setTargetAddress] = useState<string | undefined>();
-	const [targetDecimals, setTargetDecimals] = useState<number | undefined>();
+
 	const [targetData, setTargetData] = useState<TargetData | null>(null);
 
 	const web3 = new Web3(Web3.givenProvider);
@@ -81,7 +80,7 @@ export const Sniper = () => {
 
 	ethereum?.on(
 		"chainChanged",
-		(chainIdData: unknown) => {
+		(_chainIdData: unknown) => {
 			window.location.reload();
 		}
 	);

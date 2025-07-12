@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
+
 import { getApiUrl } from "../constants";
 import { BscTokenData } from "../utils/types";
 import { mockBscTokensData } from "../mocks/bscTokensData";

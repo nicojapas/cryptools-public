@@ -1,7 +1,7 @@
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Button from "@mui/material/Button";
+
 import Container from "@mui/material/Container";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import GppGoodOutlinedIcon from "@mui/icons-material/GppGoodOutlined";
@@ -14,7 +14,7 @@ import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Tooltip from "@mui/material/Tooltip";
+
 
 import {
 	APP_BAR_HEIGHT,
@@ -47,7 +47,7 @@ const BscSniffer = () => {
 	if (isLoading) return <Skeleton variant="rounded" height={60} />;
 
 	// Sort tokens by timestamp (most recent first)
-	const sortedData = (data || []).slice().sort((a, b) => Number(b.timestamp) - Number(a.timestamp));
+	const sortedData = (data || []).slice().sort((a: BscTokenData, b: BscTokenData) => Number(b.timestamp) - Number(a.timestamp));
 
 	return (
 		<StyledBoxForPages

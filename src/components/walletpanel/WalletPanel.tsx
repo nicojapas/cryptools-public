@@ -52,7 +52,7 @@ const WalletPanel = (props: ExtendedWalletPanelProps) => {
 						justifyContent: "space-between",
 					}}
 				>
-					<ConnectButton connect={connect} currentAccount={currentAccount} />
+					<ConnectButton connect={connect} currentAccount={currentAccount || null} />
 					<InfoLabel fullWidth name="ChainId" value={String(chainId || "")} />
 				</Stack>
 				{currentAccount ? (

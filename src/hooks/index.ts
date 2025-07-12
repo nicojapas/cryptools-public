@@ -1,4 +1,3 @@
-export { useTokensData } from './useTokensData';
 export * from './useBannerData';
 export * from './useNewsData';
 export * from './useTrendingCoinsData';

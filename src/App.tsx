@@ -11,7 +11,6 @@ import {
 	BiggestCoins,
 	News,
 	Charts,
-	Nfts,
 	HotProjects,
 	TopGainers,
 	WorstLosers,
@@ -23,13 +22,12 @@ import {
 import {
 	CryptoolsAppBar,
 	ThemeByMode,
-	ContactAndCryptoAddresses,
 } from "./components";
 import {
 	QueryClient,
 	QueryClientProvider,
-	useQuery,
 } from "@tanstack/react-query";
+import { TokensDataProvider } from "./contexts/TokensDataContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -47,7 +45,7 @@ const ColorModeContext = createContext({ toggleColorMode: () => {} });
 
 
 const App = () => {
-	const [themeMode, setThemeMode] = useState("light");
+	const [themeMode, setThemeMode] = useState<"light" | "dark">("light");
 	const [settingsButton, setSettingsButton] = useState<React.ReactElement | undefined>(undefined);
 	
 	const handleSetSettingsButton = (button?: React.ReactElement) => {
@@ -57,7 +55,7 @@ const App = () => {
 	const colorMode = useMemo(
 		() => ({
 			toggleColorMode: () => {
-				setThemeMode((prevMode) =>
+				setThemeMode((prevMode: "light" | "dark") =>
 					prevMode === "light" ? "dark" : "light"
 				);
 			},
@@ -87,20 +85,22 @@ const App = () => {
 							settingsButton={settingsButton || <div />}
 						/>
 						<div style={{ position: 'relative', height: '100vh', paddingTop: '64px' }}>
-							<Routes>
-								<Route path="/" element={<Home />} />
-								<Route path="/home" element={<Home />} />
-								<Route path="/news" element={<News />} />
-								<Route path="/biggest-coins" element={<BiggestCoins setSettingsButton={handleSetSettingsButton} />} />
-								<Route path="/nfts" element={<Soon />} />
-								<Route path="/charts" element={<Charts />} />
-								<Route path="/hot-projects" element={<HotProjects />} />
-								<Route path="/top-gainers" element={<TopGainers />} />
-								<Route path="/worst-losers" element={<WorstLosers />} />
-								<Route path="/rug-checker" element={<RugChecker />} />
-								<Route path="/sniper" element={<Sniper />} />
-								<Route path="/bsc-sniffer" element={<BscSniffer />} />
-							</Routes>
+							<TokensDataProvider>
+								<Routes>
+									<Route path="/" element={<Home />} />
+									<Route path="/home" element={<Home />} />
+									<Route path="/news" element={<News />} />
+									<Route path="/biggest-coins" element={<BiggestCoins setSettingsButton={handleSetSettingsButton} />} />
+									<Route path="/nfts" element={<Soon />} />
+									<Route path="/charts" element={<Charts />} />
+									<Route path="/hot-projects" element={<HotProjects />} />
+									<Route path="/top-gainers" element={<TopGainers />} />
+									<Route path="/worst-losers" element={<WorstLosers />} />
+									<Route path="/rug-checker" element={<RugChecker />} />
+									<Route path="/sniper" element={<Sniper />} />
+									<Route path="/bsc-sniffer" element={<BscSniffer />} />
+								</Routes>
+							</TokensDataProvider>
 						</div>
 					</HashRouter>
 				</ThemeProvider>

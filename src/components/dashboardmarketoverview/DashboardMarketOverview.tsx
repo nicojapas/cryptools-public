@@ -1,11 +1,9 @@
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
 import Box from "@mui/material/Box";
-import Skeleton from "@mui/material/Skeleton";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import CardActionArea from "@mui/material/CardActionArea";
-import { getApiUrl } from "../../constants";
+
 import { useNavigate } from "react-router-dom";
 import { DashboardMarketOverviewData, DashboardCoinCardProps } from "../../utils/types";
 

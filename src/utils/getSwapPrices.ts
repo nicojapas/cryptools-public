@@ -13,7 +13,7 @@ export default async function getSwapPrices() {
 
 		const BLOCKS_TO_CHECK = 1;
 
-		async function checkBlocksForPancakeSwapTransactions() {
+		const checkBlocksForPancakeSwapTransactions = async () => {
 			// Get the latest block number
 			const latestBlockNumber = await web3.eth.getBlockNumber();
 			// Loop over the last BLOCKS_TO_CHECK blocks
@@ -106,6 +106,6 @@ export default async function getSwapPrices() {
 			}
 		}
 
-		checkBlocksForPancakeSwapTransactions();
+		await checkBlocksForPancakeSwapTransactions();
 	}
 }

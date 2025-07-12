@@ -4,7 +4,7 @@ import Web3 from "web3";
 
 let web3 = new Web3(Web3.givenProvider);
 
-export default async function safuTest(target) {
+export default async function safuTest(target: string) {
 	if (!web3.currentProvider) {
 		console.log("Couldn't detect provider.");
 	} else {
@@ -22,20 +22,20 @@ export default async function safuTest(target) {
 
 		const [name, symbol] = await getNameAndSymbol(target);
 
-		const contract = new web3.eth.Contract(ABI_SAFU_TEST, MY_CONTRACT);
+		const contract = new web3.eth.Contract(ABI_SAFU_TEST as any, MY_CONTRACT);
 		const amount = web3.utils.toWei("0.1", "ether");
 
 		try {
 			const out = await contract.methods
 				.buyAndSell(target)
 				.call({ value: amount });
-			const [buyIdeal, buyReal, sellIdeal, sellReal] = Object.values(out);
+			const [buyIdeal, buyReal, sellIdeal, sellReal] = Object.values(out) as [any, any, any, any];
 
-			buyTax = Math.round(100 - (buyReal * 100) / buyIdeal, 1);
-			sellTax = Math.round(100 - (sellReal * 100) / sellIdeal, 1);
-			Number.parseInt(
-				web3.utils.fromWei(String(amount - sellReal), "gwei")
-			);
+			buyTax = Math.round(100 - (Number(buyReal) * 100) / Number(buyIdeal));
+			sellTax = Math.round(100 - (Number(sellReal) * 100) / Number(sellIdeal));
+					Number.parseInt(
+			web3.utils.fromWei(String(Number(amount) - Number(sellReal)), "gwei")
+		);
 
 			if (buyTax > 20 || sellTax > 20) {
 				safuness = "UNSAFE";
@@ -47,8 +47,8 @@ export default async function safuTest(target) {
 
 			buyTax = buyTax.toString() + "%";
 			sellTax = sellTax.toString() + "%";
-		} catch (e) {
-			if (e.message.includes("Internal JSON-RPC error.")) {
+		} catch (e: any) {
+			if (e.message?.includes("Internal JSON-RPC error.")) {
 				const { message } = JSON.parse(
 					e.message.split("Internal JSON-RPC error.")[1]
 				);

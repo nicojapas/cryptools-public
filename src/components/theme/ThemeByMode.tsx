@@ -1,6 +1,6 @@
 import { blueGrey, blue } from "@mui/material/colors";
 
-const themeByMode = (mode) => ({
+const themeByMode = (mode: "light" | "dark") => ({
 	palette: {
 		mode,
 		primary: {

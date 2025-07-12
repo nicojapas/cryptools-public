@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from "react";
+import { useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import FormControl from "@mui/material/FormControl";
@@ -6,12 +6,11 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormGroup from "@mui/material/FormGroup";
 import FormHelperText from "@mui/material/FormHelperText";
 import FormLabel from "@mui/material/FormLabel";
-import IconButton from "@mui/material/IconButton";
-import SettingsIcon from "@mui/icons-material/Settings";
-import Switch from "@mui/material/Switch";
-import { SettingsState, SettingsProps } from "../../utils/types";
 
-export const SettingsDialog = ({ settingsState, setSettingsState, setSettingsButton }: SettingsProps) => {
+import Switch from "@mui/material/Switch";
+import { SettingsProps } from "../../utils/types";
+
+export const SettingsDialog = ({ settingsState, setSettingsState }: SettingsProps) => {
   const [open, setOpen] = useState(false);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -22,11 +21,11 @@ export const SettingsDialog = ({ settingsState, setSettingsState, setSettingsBut
   };
 
   // Memoize SettingsButton to avoid creating a new function on every render
-  const SettingsButton = useCallback(() => (
-    <IconButton onClick={() => setOpen(true)} size="large" color="inherit" sx={{ justifyContent: "right" }}>
-      <SettingsIcon />
-    </IconButton>
-  ), []);
+  // const _SettingsButton = useCallback(() => (
+  //   <IconButton onClick={() => setOpen(true)} size="large" color="inherit" sx={{ justifyContent: "right" }}>
+  //     <SettingsIcon />
+  //   </IconButton>
+  // ), []);
 
   // All useEffect hooks have been removed as per user request.
 

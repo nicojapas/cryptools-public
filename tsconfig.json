@@ -1,8 +1,8 @@
 
 {
     "compilerOptions": {
-      "target": "es5",                           // Specify ECMAScript target version
-      "lib": ["dom", "es6", "dom.iterable", "scripthost"], // Include necessary libraries
+      "target": "es2017",                        // Specify ECMAScript target version
+      "lib": ["dom", "es2017", "dom.iterable", "scripthost"], // Include necessary libraries
       "allowJs": true,                           // Allow JavaScript files to be compiled
       "jsx": "react-jsx",                        // Enable the new JSX transform for React 17+
       "module": "esnext",                        // Use ES module system

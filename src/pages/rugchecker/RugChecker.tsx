@@ -12,7 +12,7 @@ import LinearProgress from "@mui/material/LinearProgress";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-// @ts-expect-error - Web3 types not properly resolved
+
 import Web3 from "web3";
 
 import {
@@ -43,7 +43,7 @@ const RugChecker = () => {
 		await setTargetAddressIfValid(address);
 	}
 
-	async function handlePasteButtonClick(e: React.MouseEvent<HTMLButtonElement>) {
+	async function handlePasteButtonClick(_e: React.MouseEvent<HTMLButtonElement>) {
 		const clipboardText = await navigator.clipboard.readText();
 		setTargetAddressInput(clipboardText);
 		await setTargetAddressIfValid(clipboardText);

@@ -1,5 +1,5 @@
 import { StyledPaper } from "..";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
@@ -10,7 +10,7 @@ import {
 	PS_ROUTER_ABI,
 	WBNB_ADDRESS,
 } from "../../constants";
-import { TsxPanelProps, Web3Instance } from "../../utils/types";
+import { TsxPanelProps } from "../../utils/types";
 
 export const TsxPanel = (props: TsxPanelProps) => {
 	const { currentAccount, web3, chainId, buyAmount, targetAddress } = props;
@@ -53,14 +53,12 @@ export const TsxPanel = (props: TsxPanelProps) => {
 		inputAmount: string,
 		walletAddress: string,
 		targetTokenAddress: string,
-		router: string,
+		router: any,
 		inTokenAddress: string,
-		gas?: number,
-		gasPrice?: any,
-		waitingTime?: number
+		_waitingTime?: number
 	) {
 		try {
-			waitingTime = waitingTime || 300000;
+			const waitingTime = _waitingTime || 300000;
 			inputAmount =
 				"0x" +
 				web3.utils

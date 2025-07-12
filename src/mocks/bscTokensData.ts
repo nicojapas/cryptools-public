@@ -1,4 +1,4 @@
-import { BscTokenData } from "../utils/types";
+
 
 // Mock data for BSC tokens
 export const mockBscTokensData = {

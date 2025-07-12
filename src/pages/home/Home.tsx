@@ -14,7 +14,7 @@ import LunchDiningOutlinedIcon from "@mui/icons-material/LunchDiningOutlined";
 import RocketLaunchOutlinedIcon from "@mui/icons-material/RocketLaunchOutlined";
 import ShowChartOutlinedIcon from "@mui/icons-material/ShowChartOutlined";
 import Typography from "@mui/material/Typography";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import {
 	Banner,
 	StyledPaper,
@@ -27,7 +27,7 @@ import { APP_BAR_HEIGHT } from "../../constants.js";
 import { HomeProps, HomeAction, BadgesMap, PagesIconButtonProps } from "../../utils/types";
 
 const Home = (props: HomeProps) => {
-	const { setSettingsButton, coinsData } = props;
+	const { setSettingsButton } = props;
 	const actions: HomeAction[] = [
 		{ icon: CurrencyBitcoinOutlinedIcon, page: "biggest-coins" },
 		{ icon: ShowChartOutlinedIcon, page: "charts" },
@@ -90,7 +90,7 @@ const Home = (props: HomeProps) => {
 						<StyledPaper
 							sx={{ clipPath: "inset(-1px -2px -2px -1px)" }}
 						>
-							<Banner className="banner1" />
+							<Banner />
 						</StyledPaper>
 					</Grid>
 					<Grid item md={6} xs={12} sx={{ display: "grid" }}>
@@ -139,9 +139,9 @@ const PagesIconButton = (props: PagesIconButtonProps) => {
 					}}
 				>
 					{
-						<action.icon
-							sx={{ color: "primary.dark", fontSize: 40 }}
-						/>
+						React.createElement(action.icon, {
+							sx: { color: "primary.dark", fontSize: 40 }
+						} as any)
 					}
 					{badge ? (
 						<Badge

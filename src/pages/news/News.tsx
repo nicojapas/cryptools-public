@@ -99,7 +99,7 @@ const News = () => {
 					{/* Main news content */}
 					<Grid item xs={12} md={8} sx={{ height: '100%' }}>
 						<StyledPaper sx={{ height: '100%', overflow: 'auto' }}>
-							{Array.from(data || []).map((el: NewsData, index: number) => (
+							{(data as NewsData[]).map((el: NewsData, index: number) => (
 								<Grid
 									item
 									xs={12}

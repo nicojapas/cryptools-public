@@ -84,17 +84,13 @@ const CustomCard = (props: CustomCardProps) => {
 		totalPrice,
 		imgPreviewUrl,
 		name,
-		tokenId,
 		description,
 		price,
 		currency,
 		imgBigUrl,
 		paymentTokenSymbol,
 		paymentTokenDecimals,
-		paymentTokenImg,
-		paymentTokenEthPrice,
 		paymentTokenUsdPrice,
-		cardHeight,
 	} = props;
 
 	function handleClick() {
