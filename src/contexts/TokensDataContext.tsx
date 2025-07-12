@@ -19,6 +19,7 @@ interface TokensDataContextType {
   topGainersData: Coin[] | undefined;
   worstLosersData: Coin[] | undefined;
   trendingCoinsData: TrendingCoinItem[] | undefined;
+  bannerData: Coin[] | undefined;
   isLoading: boolean;
   error: Error | null;
 }
@@ -65,6 +66,7 @@ export const TokensDataProvider = ({ children }: TokensDataProviderProps) => {
     topGainersData: data?.topGainers,
     worstLosersData: data?.worstLosers,
     trendingCoinsData: data?.trendingCoins,
+    bannerData: data?.banner,
     isLoading,
     error: error as Error | null,
   };

@@ -3,12 +3,12 @@ import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardContent from "@mui/material/CardContent";
 import Stack from "@mui/material/Stack";
-
-import { useBannerData } from "../../hooks";
 import { Coin } from "../../utils/types";
 import { CoinImg, CoinName, CoinPrice, CoinPriceChange } from "./elements";
 
 import "./banner.css";
+import { useTokensDataContext } from "../../contexts/TokensDataContext";
+import { Skeleton } from "@mui/material";
 
 const Banner = () => {
 	const navigate = useNavigate();
@@ -19,13 +19,13 @@ const Banner = () => {
 		});
 	}
 
-	const { error, data } = useBannerData();
-
-	if (error) return "An error has occurred: " + (error instanceof Error ? error.message : "Unknown error");
+	const { isLoading, error, bannerData } = useTokensDataContext();
+	if (error) return <div>An error has occurred: {error.message}</div>;
+	if (isLoading || !bannerData) return <Skeleton variant="rounded" height={60} />;
 
 	const cardWidth = 300;
 	const cardMargin = 8;
-	const coinsCount = Array.isArray(data) ? data.length : 0;
+	const coinsCount = Array.isArray(bannerData) ? bannerData.length : 0;
 	const setWidth = coinsCount * (cardWidth + cardMargin);
 
 	return (
@@ -42,8 +42,8 @@ const Banner = () => {
 				}}
 			>
 				{[0, 1].map((dup) =>
-					Array.isArray(data)
-						? data.map((coin: Coin, index: number) => (
+					Array.isArray(bannerData)
+						? bannerData.map((coin: Coin, index: number) => (
 							<Card
 								key={dup + '-' + index}
 								sx={{
