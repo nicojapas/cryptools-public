@@ -1,30 +1,15 @@
-import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActionArea from "@mui/material/CardActionArea";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import Grid from "@mui/material/Grid";
 import Skeleton from "@mui/material/Skeleton";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
 
-import { APP_BAR_HEIGHT, getApiUrl } from "../../constants.js";
-import { Coin, LoserCardProps } from "../../utils/types";
+import { APP_BAR_HEIGHT } from "../../constants.js";
+import { LoserCard } from "./elements";
+import { useTokensDataContext } from "../../contexts/TokensDataContext";
 
 const Losers = () => {
-	const { isLoading, error, data } = useQuery<Coin[], Error>({
-		queryKey: ["cryptoolsLosersData"],
-		queryFn: async () => {
-			const API_URL = await getApiUrl();
-			return fetch(new URL("losers", API_URL).toString()).then((res) =>
-				res.json()
-			);
-		},
-	});
+	const { isLoading, error, worstLosersData } = useTokensDataContext();
 
-	if (error) return <>&#39;An error has occurred: &#39; + {(error instanceof Error ? error.message : "Unknown error")}</>;
+	if (error) return <>&apos;An error has occurred: &apos; + {(error instanceof Error ? error.message : "Unknown error")}</>;
 
 	if (isLoading) return <Skeleton variant="rounded" height={60} />;
 
@@ -51,10 +36,9 @@ const Losers = () => {
 						pl: 1,
 						pr: 1,
 						height: "100%",
-						transition: "transform 5s 1s",
 					}}
 				>
-					{Array.isArray(data) && data.map((item: Coin, index: number) => (
+					{Array.isArray(worstLosersData) && worstLosersData.map((item: any, index: number) => (
 						<Grid
 							item
 							xs={12}
@@ -65,7 +49,7 @@ const Losers = () => {
 								height: "50%",
 							}}
 						>
-							<CustomCard
+							<LoserCard
 								{...item}
 								index={index}
 							/>
@@ -74,103 +58,6 @@ const Losers = () => {
 				</Grid>
 			</Box>
 		</div>
-	);
-};
-
-const CustomCard = (props: LoserCardProps) => {
-	const navigate = useNavigate();
-
-	function handleClick() {
-		navigate("/charts", {
-			state: { symbol: props.symbol },
-		});
-	}
-
-	return (
-		<Card
-			variant="outlined"
-			square={true}
-			sx={{
-				width: "100%",
-				height: "100%",
-			}}
-		>
-			<CardContent
-				sx={{
-					p: 0,
-					height: "100%",
-					[`&:last-child`]: { p: 0 },
-				}}
-			>
-				{props.id === null ? (
-					<Skeleton />
-				) : (
-					<CardActionArea
-						sx={{
-							height: "100%",
-							backgroundColor: "rgba(255,0,0,0.3)",
-							[`:hover`]: {
-								transform: "scale(1.2)",
-								backgroundColor: "rgba(255,0,0,0.6)",
-							},
-							transition: "transform 0.5s, background-color 0.2s",
-						}}
-						onClick={handleClick}
-					>
-						<Stack
-							direction="column"
-							sx={{
-								height: "100%",
-								justifyContent: "space-evenly",
-							}}
-						>
-							<Typography variant="h2" color="error.dark">
-								{props.index + 1}
-							</Typography>
-							<CardMedia
-								component="img"
-								sx={{
-									objectFit: "contain",
-									width: "60px",
-									display: "unset",
-									alignSelf: "center",
-								}}
-								image={props.image}
-								alt={props.name}
-							/>
-							<Typography
-								variant="h4"
-								component="div"
-								color="error.main"
-								sx={{
-									zIndex: 1,
-								}}
-							>
-								{props.name}
-							</Typography>
-							<Typography
-								variant="h5"
-								color="error.dark"
-								sx={{
-									zIndex: 1,
-								}}
-							>
-								[{props.symbol}]
-							</Typography>
-							<Typography
-								variant="h5"
-								color="error.main"
-								sx={{
-									zIndex: 1,
-								}}
-							>
-								{props.price_change_percentage_24h !== undefined ? props.price_change_percentage_24h.toFixed(2) + "%" : "-"}
-							</Typography>
-						</Stack>
-					</CardActionArea>
-				)}
-			</CardContent>
-		</Card>
 	);
 };
 

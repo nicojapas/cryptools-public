@@ -17,6 +17,7 @@ declare global {
 interface TokensDataContextType {
   biggestCoinsData: BiggestCoinData[] | undefined;
   topGainersData: Coin[] | undefined;
+  worstLosersData: Coin[] | undefined;
   trendingCoinsData: TrendingCoinItem[] | undefined;
   isLoading: boolean;
   error: Error | null;
@@ -62,6 +63,7 @@ export const TokensDataProvider = ({ children }: TokensDataProviderProps) => {
   const contextValue: TokensDataContextType = {
     biggestCoinsData: data?.biggestCoins,
     topGainersData: data?.topGainers,
+    worstLosersData: data?.worstLosers,
     trendingCoinsData: data?.trendingCoins,
     isLoading,
     error: error as Error | null,

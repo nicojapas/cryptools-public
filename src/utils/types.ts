@@ -24,9 +24,7 @@ export interface InfoLabelProps {
   fullWidth?: boolean;
 }
 
-export interface LoserCardProps extends Coin {
-  index: number;
-}
+
 
 export interface TsxPanelProps {
   currentAccount: string;

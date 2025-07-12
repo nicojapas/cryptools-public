@@ -196,4 +196,46 @@ export const mockTokensData = {
       price_change_percentage_24h: 3.19,
     }
   ] as Coin[],
+  worstLosers: [
+    {
+      id: "dogecoin",
+      symbol: "doge",
+      name: "Dogecoin",
+      image: "https://assets.coingecko.com/coins/images/5/large/dogecoin.png?1547792256",
+      price: 0.085,
+      price_change_percentage_24h: -8.45,
+    },
+    {
+      id: "shiba-inu",
+      symbol: "shib",
+      name: "Shiba Inu",
+      image: "https://assets.coingecko.com/coins/images/11939/large/shiba.png?1622619446",
+      price: 0.00000985,
+      price_change_percentage_24h: -7.23,
+    },
+    {
+      id: "polygon",
+      symbol: "matic",
+      name: "Polygon",
+      image: "https://assets.coingecko.com/coins/images/4713/large/matic-token-icon.png?1624446912",
+      price: 0.85,
+      price_change_percentage_24h: -6.78,
+    },
+    {
+      id: "chainlink",
+      symbol: "link",
+      name: "Chainlink",
+      image: "https://assets.coingecko.com/coins/images/877/large/chainlink.png?1547034700",
+      price: 14.25,
+      price_change_percentage_24h: -5.92,
+    },
+    {
+      id: "uniswap",
+      symbol: "uni",
+      name: "Uniswap",
+      image: "https://assets.coingecko.com/coins/images/12504/large/uniswap-uni.png?1600306604",
+      price: 7.85,
+      price_change_percentage_24h: -4.67,
+    }
+  ] as Coin[],
 }; 
