@@ -1,3 +1,4 @@
+import { createContext, useContext, ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { useMemo } from "react";
 import { getApiUrl } from "../constants";
@@ -11,6 +12,18 @@ declare global {
   interface ImportMeta {
     env: ImportMetaEnv;
   }
+}
+
+interface NewsDataContextType {
+  newsData: NewsData[] | undefined;
+  isLoading: boolean;
+  error: Error | null;
+}
+
+const NewsDataContext = createContext<NewsDataContextType | undefined>(undefined);
+
+interface NewsDataProviderProps {
+  children: ReactNode;
 }
 
 // Helper function to calculate time since published
@@ -72,10 +85,9 @@ const transformNewsData = (rawData: RawNewsData[]): NewsData[] => {
   });
 };
 
-export const useNewsData = () => {
+export const NewsDataProvider = ({ children }: NewsDataProviderProps) => {
   const useMocks = import.meta.env.VITE_USE_MOCKS === 'true';
-  
-  // Memoize the mock data transformation to prevent unnecessary re-computations
+
   const mockData = useMemo(() => {
     if (useMocks) {
       return transformNewsData(mockNewsData);
@@ -83,11 +95,10 @@ export const useNewsData = () => {
     return null;
   }, [useMocks]);
 
-  return useQuery<NewsData[], Error>({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["newsData"],
     queryFn: async () => {
       if (useMocks) {
-        // Return memoized mock data
         return mockData!;
       }
       
@@ -125,5 +136,26 @@ export const useNewsData = () => {
         throw error;
       }
     },
+    retry: false,
   });
+
+  const contextValue: NewsDataContextType = {
+    newsData: data,
+    isLoading,
+    error: error as Error | null,
+  };
+
+  return (
+    <NewsDataContext.Provider value={contextValue}>
+      {children}
+    </NewsDataContext.Provider>
+  );
+};
+
+export const useNewsDataContext = () => {
+  const context = useContext(NewsDataContext);
+  if (context === undefined) {
+    throw new Error('useNewsDataContext must be used within a NewsDataProvider');
+  }
+  return context;
 }; 

@@ -18,7 +18,7 @@ import WarningIcon from "@mui/icons-material/Warning";
 import { APP_BAR_HEIGHT } from "../../constants.js";
 import { StyledBoxForPages, StyledPaper } from "../../components";
 import { VoteMap, VotesComponentProps, NewsData } from "../../utils/types";
-import { useNewsData } from "../../hooks";
+import { useNewsDataContext } from "../../contexts/NewsDataContext";
 import { SidePanel } from "../bscsniffer/elements";
 
 const VOTES_MAP: VoteMap = {
@@ -45,7 +45,7 @@ const VotesComponent = (props: VotesComponentProps) => {
 };
 
 const News = () => {
-	const { isLoading, error, data } = useNewsData();
+	const { isLoading, error, newsData } = useNewsDataContext();
 
 	if (error) {
 		console.error('News component error:', error);
@@ -69,7 +69,7 @@ const News = () => {
 	if (isLoading) return <Skeleton variant="rounded" height={60} />;
 
 	// Handle empty data
-	if (!data || data.length === 0) {
+	if (!newsData || newsData.length === 0) {
 		return (
 			<StyledBoxForPages
 				id="news"
@@ -99,7 +99,7 @@ const News = () => {
 					{/* Main news content */}
 					<Grid item xs={12} md={8} sx={{ height: '100%' }}>
 						<StyledPaper sx={{ height: '100%', overflow: 'auto' }}>
-							{(data as NewsData[]).map((el: NewsData, index: number) => (
+							{(newsData as NewsData[]).map((el: NewsData, index: number) => (
 								<Grid
 									item
 									xs={12}

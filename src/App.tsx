@@ -17,7 +17,6 @@ import {
 	RugChecker,
 	Sniper,
 	BscSniffer,
-	Soon,
 } from "./pages";
 import {
 	CryptoolsAppBar,
@@ -28,6 +27,7 @@ import {
 	QueryClientProvider,
 } from "@tanstack/react-query";
 import { TokensDataProvider } from "./contexts/TokensDataContext";
+import { NewsDataProvider } from "./contexts/NewsDataContext";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -86,20 +86,21 @@ const App = () => {
 						/>
 						<div style={{ position: 'relative', height: '100vh', paddingTop: '64px' }}>
 							<TokensDataProvider>
-								<Routes>
-									<Route path="/" element={<Home />} />
-									<Route path="/home" element={<Home />} />
-									<Route path="/news" element={<News />} />
-									<Route path="/biggest-coins" element={<BiggestCoins setSettingsButton={handleSetSettingsButton} />} />
-									<Route path="/nfts" element={<Soon />} />
-									<Route path="/charts" element={<Charts />} />
-									<Route path="/trending" element={<Trending />} />
-									<Route path="/top-gainers" element={<TopGainers />} />
-									<Route path="/worst-losers" element={<WorstLosers />} />
-									<Route path="/rug-checker" element={<RugChecker />} />
-									<Route path="/sniper" element={<Sniper />} />
-									<Route path="/bsc-sniffer" element={<BscSniffer />} />
-								</Routes>
+								<NewsDataProvider>
+									<Routes>
+										<Route path="/" element={<Home />} />
+										<Route path="/home" element={<Home />} />
+										<Route path="/news" element={<News />} />
+										<Route path="/biggest-coins" element={<BiggestCoins setSettingsButton={handleSetSettingsButton} />} />
+										<Route path="/charts" element={<Charts />} />
+										<Route path="/trending" element={<Trending />} />
+										<Route path="/top-gainers" element={<TopGainers />} />
+										<Route path="/worst-losers" element={<WorstLosers />} />
+										<Route path="/rug-checker" element={<RugChecker />} />
+										<Route path="/sniper" element={<Sniper />} />
+										<Route path="/bsc-sniffer" element={<BscSniffer />} />
+									</Routes>
+								</NewsDataProvider>
 							</TokensDataProvider>
 						</div>
 					</HashRouter>

@@ -4,7 +4,6 @@ export { default as Charts } from './charts/Charts';
 export { default as Home } from './home/Home';
 export { default as Trending } from './trending/Trending';
 export { default as News } from './news/News';
-export { default as Nfts } from './nfts/Nfts';
 export { default as RugChecker } from './rugchecker/RugChecker';
 export { default as Sniper } from './sniper/Sniper';
 export { default as Soon } from './soon/Soon';

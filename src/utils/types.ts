@@ -279,7 +279,6 @@ export interface BadgesMap {
   "rug-checker": BadgeInfo;
   "bsc-sniffer": BadgeInfo;
   sniper: BadgeInfo;
-  nfts: BadgeInfo;
 }
 
 export interface HomeProps {
