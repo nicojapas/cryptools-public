@@ -1,0 +1,11 @@
+export { default as BiggestCoins } from './biggestcoins/BiggestCoins';
+export { default as BscSniffer } from './bscsniffer/BscSniffer';
+export { default as Charts } from './charts/Charts';
+export { default as Home } from './home/Home';
+export { default as Trending } from './trending/Trending';
+export { default as News } from './news/News';
+export { default as RugChecker } from './rugchecker/RugChecker';
+export { default as Sniper } from './sniper/Sniper';
+export { default as Soon } from './soon/Soon';
+export { default as TopGainers } from './topgainers/TopGainers';
+export { default as WorstLosers } from './worstlosers/WorstLosers';

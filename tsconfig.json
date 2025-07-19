@@ -1,0 +1,26 @@
+
+{
+    "compilerOptions": {
+      "target": "es2017",                        // Specify ECMAScript target version
+      "lib": ["dom", "es2017", "dom.iterable", "scripthost"], // Include necessary libraries
+      "allowJs": true,                           // Allow JavaScript files to be compiled
+      "jsx": "react-jsx",                        // Enable the new JSX transform for React 17+
+      "module": "esnext",                        // Use ES module system
+      "moduleResolution": "node",                // Enable Node module resolution
+      "resolveJsonModule": true,                 // Allow importing JSON files
+      "esModuleInterop": true,                   // Enable default imports from modules without default exports
+      "forceConsistentCasingInFileNames": true,  // Ensure consistent file naming
+      "strict": true,                            // Enable all strict type-checking options
+      "skipLibCheck": true,                      // Skip type checking of declaration files for faster compilation
+      "noUnusedLocals": true,                    // Report errors on unused local variables
+      "noUnusedParameters": true,                // Report errors on unused function parameters
+      "strictNullChecks": true                   // Enable strict null checks
+    },
+    "include": [
+      "src/**/*"                                 // Include all files under the "src" directory
+    ],
+    "exclude": [
+      "node_modules"                             // Exclude node_modules
+    ]
+  }
+  

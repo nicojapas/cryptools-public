@@ -1,0 +1,13 @@
+# Jekyll configuration for GitHub Pages
+# This ensures proper MIME types and disables Jekyll processing
+
+# Disable Jekyll processing
+disable_whitelist: true
+plugins: []
+
+# Set proper MIME types
+include: [".nojekyll"]
+
+# Ensure JavaScript files are served with correct MIME type
+markdown: kramdown
+highlighter: rouge 
