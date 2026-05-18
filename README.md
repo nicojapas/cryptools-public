@@ -1,5 +1,16 @@
 # Cryptools
 
+![React](https://img.shields.io/badge/React-18.2.0-61DAFB?style=flat&logo=react&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.7-3178C6?style=flat&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-6.0-646CFF?style=flat&logo=vite&logoColor=white)
+![MUI](https://img.shields.io/badge/MUI-6.4-007FFF?style=flat&logo=mui&logoColor=white)
+![React Query](https://img.shields.io/badge/TanStack_Query-5.81-FF4154?style=flat&logo=reactquery&logoColor=white)
+![React Router](https://img.shields.io/badge/React_Router-6.9-CA4245?style=flat&logo=reactrouter&logoColor=white)
+![Web3.js](https://img.shields.io/badge/Web3.js-1.10-F16822?style=flat&logo=web3dotjs&logoColor=white)
+![Jest](https://img.shields.io/badge/Jest-29.5-C21325?style=flat&logo=jest&logoColor=white)
+![ESLint](https://img.shields.io/badge/ESLint-9.17-4B32C3?style=flat&logo=eslint&logoColor=white)
+![Prettier](https://img.shields.io/badge/Prettier-3.4-F7B93E?style=flat&logo=prettier&logoColor=black)
+
 A comprehensive cryptocurrency tools web application built with React and TypeScript. Cryptools provides real-time market data, news, token analysis, and trading tools for the cryptocurrency ecosystem.
 
 🔗 **Live Demo**: [https://nicojapas.github.io/cryptools-public](https://nicojapas.github.io/cryptools-public)
