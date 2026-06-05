@@ -129,6 +129,9 @@ export const NewsDataProvider = ({ children }: NewsDataProviderProps) => {
         let results;
         if (Array.isArray(json)) {
           results = json;
+        } else if (json.data?.results && Array.isArray(json.data.results)) {
+          // New API structure: { data: { results: [...] } }
+          results = json.data.results;
         } else if (json.results && Array.isArray(json.results)) {
           results = json.results;
         } else if (json.data && Array.isArray(json.data)) {
