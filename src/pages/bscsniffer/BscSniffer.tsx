@@ -3,13 +3,16 @@ import { useNavigate } from "react-router-dom";
 import React, { useState, useRef, useEffect } from "react";
 import ReactDOM from "react-dom";
 
+import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import GppGoodOutlinedIcon from "@mui/icons-material/GppGoodOutlined";
 import Grid from "@mui/material/Grid";
+import LinearProgress from "@mui/material/LinearProgress";
 import Paper from "@mui/material/Paper";
 import Skeleton from "@mui/material/Skeleton";
 import Table from "@mui/material/Table";
+import Typography from "@mui/material/Typography";
 import TableBody from "@mui/material/TableBody";
 import TableCell, { tableCellClasses } from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
@@ -26,7 +29,7 @@ import {
 	POOCOIN_URL,
 } from "../../constants.js";
 import { StyledBoxForPages } from "../../components";
-import { useBscTokensData } from "../../hooks";
+import { useBscTokensData, getTimeDifferenceString } from "../../hooks";
 import { BscTokenData, TokenTableRowProps } from "../../utils/types";
 import { SidePanel } from "./elements";
 
@@ -44,7 +47,7 @@ const BscSniffer = () => {
 	const navigate = useNavigate();
 	const [hovered, setHovered] = useState<number | undefined>();
 	const [rowRect, setRowRect] = useState<DOMRect | null>(null);
-	const { isLoading, error, data } = useBscTokensData();
+	const { isLoading, error, data, progress, isScanning } = useBscTokensData();
 
 	const handleRowMouseEnter = (index: number) => {
 		setHovered(index);
@@ -94,7 +97,7 @@ const BscSniffer = () => {
 	);
 
 	// Sort tokens by timestamp (most recent first)
-	const sortedData = (data || []).slice().sort((a: BscTokenData, b: BscTokenData) => Number(b.timestamp) - Number(a.timestamp));
+	const sortedData = (data || []).slice().sort((a: BscTokenData, b: BscTokenData) => b.blockTimestamp - a.blockTimestamp);
 
 	// Balloon data for the currently hovered row
 	const hoveredToken = hovered !== undefined ? sortedData[hovered] : null;
@@ -140,10 +143,10 @@ const BscSniffer = () => {
 		},
 		{
 			key: 'bscscanCreator',
-			title: 'Check creator address in Bscscan',
+			title: 'Check creator on Bscscan',
 			onClick: () => window.open(new URL(hoveredToken.creator, BSCSCAN_ADDRESS_URL).href),
 			icon: <img src={BSCSCAN_ICON} alt="Bscscan icon" style={{ height: "16px", width: "16px" }} />,
-			label: 'To Bscscan'
+			label: 'Creator on Bscscan'
 		},
 	] : [];
 
@@ -161,8 +164,22 @@ const BscSniffer = () => {
 					</Grid>
 
 					{/* Main table */}
-					<Grid item xs={12} md={8} sx={{ height: '100%' }}>
-						<TableContainer data-testid="bsc-sniffer-table" component={Paper} sx={{ height: '100%', overflow: 'auto' }}>
+					<Grid item xs={12} md={8} sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
+						{/* Progress indicator */}
+						{isScanning && progress && (
+							<Box sx={{ mb: 1, p: 1, bgcolor: 'background.paper', borderRadius: 1 }}>
+								<Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.5 }}>
+									<Typography variant="caption" color="text.secondary">
+										Scanning for new tokens...
+									</Typography>
+									<Typography variant="caption" color="primary">
+										{progress.tokensFound} tokens found
+									</Typography>
+								</Box>
+								<LinearProgress />
+							</Box>
+						)}
+						<TableContainer data-testid="bsc-sniffer-table" component={Paper} sx={{ flex: 1, overflow: 'auto' }}>
 							<Table stickyHeader>
 								<TableHead>
 									<TableRow>
@@ -401,6 +418,8 @@ const BalloonOverlay = ({
 // Update TokenTableRow to only use onRowMouseEnter
 const TokenTableRow = (props: Omit<TokenTableRowProps, 'setHovered'> & { onRowMouseEnter: () => void; }) => {
 	const { token, id, hovered, onRowMouseEnter } = props;
+	const now = Math.floor(Date.now() / 1000);
+	const formattedTimestamp = getTimeDifferenceString(now - token.blockTimestamp);
 	return (
 		<TableRow
 			id={`bsc-sniffer-row-${id}`}
@@ -414,7 +433,7 @@ const TokenTableRow = (props: Omit<TokenTableRowProps, 'setHovered'> & { onRowMo
 			{hovered !== id ? (
 				<>
 					<TableCell align="left" component="th" scope="row">
-						{token.timestamp}
+						{formattedTimestamp}
 					</TableCell>
 					<TableCell align="left">{token.name}</TableCell>
 					<TableCell align="left">{token.symbol}</TableCell>
@@ -422,7 +441,7 @@ const TokenTableRow = (props: Omit<TokenTableRowProps, 'setHovered'> & { onRowMo
 			) : (
 				<>
 					<TableCell colSpan={3} align="left" sx={{ textAlignLast: "center", background: "rgba(255,255,255,0.7)", zIndex: 1, position: "relative" }}>
-						{token.timestamp} — {token.name} — {token.symbol}
+						{formattedTimestamp} — {token.name} — {token.symbol}
 					</TableCell>
 				</>
 			)}

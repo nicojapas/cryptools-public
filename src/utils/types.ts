@@ -297,12 +297,12 @@ export interface PagesIconButtonProps {
 }
 
 export interface BscTokenData {
-  timestamp: string;
+  blockTimestamp: number;
   name: string;
   symbol: string;
   contract_address: string;
   creator: string;
-  [key: string]: string;
+  block_number: string;
 }
 
 export interface TokenTableRowProps {
