@@ -31,7 +31,7 @@ jobs:
       - name: Build with Vite
         run: yarn build
         env:
-          VITE_USE_MOCKS: true
+          VITE_USE_MOCKS: false
           VITE_AWS_INVOKE_URL: ${{ secrets.VITE_AWS_INVOKE_URL }}
           VITE_AWS_API_KEY: ${{ secrets.VITE_AWS_API_KEY }}
       - name: Upload artifact
